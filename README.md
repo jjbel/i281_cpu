@@ -24,7 +24,7 @@ The outputs of the CPU are entirely determined by the current state and the inpu
 
 ## CPU Components
 
-The CPU is composed of several key components. **Data memory** stores the current state and any intermediate data. In this implementation, it is organized as 16 bytes (16x8 bits). **Code memory** stores the CPU instructions in the form `[8-bit OpCode | 8-bit operands]`. The OpCode specifies the operation to perform, and the operands define the data or registers involved. Code memory in this design is 64x16 bits (128 bytes). Together, the CPU uses a total of 144 bytes of memory.
+The CPU is composed of several key components. **Data memory** stores the current state and any intermediate data. In this implementation, it is organized as 16 bytes (16x8 bits). **Code memory** stores the CPU instructions in the form `(8-bit OpCode | 8-bit operands)`. The OpCode specifies the operation to perform, and the operands define the data or registers involved. Code memory in this design is 64x16 bits (128 bytes). Together, the CPU uses a total of 144 bytes of memory.
 
 The **OpCode decoder** reads instructions from code memory and generates the control signals needed to operate the CPU. OpCode aliasing can be used here to reduce complexity: different OpCode patterns can map to the same control signals if they are distinguishable through outputs, flags, or context. These control signals are sent to the **Control Box**, which manages the flow of operations across all computational components.
 
