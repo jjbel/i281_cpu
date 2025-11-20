@@ -1,5 +1,5 @@
 /*
-Data memory (64 instuctions, 16 bits each)
+Data memory (16 registers, 8 bits each)
 
 Specifications: 
 c17: write enable bit
