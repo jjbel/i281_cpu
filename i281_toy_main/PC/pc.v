@@ -1,7 +1,8 @@
 /*
 PC register
 
-6 bit registers that updates every clock cycle where c14 is on, asynch reset
+Specifications:
+6 bit register that updates every clock cycle where c14 is on, asynch reset
 */
 
 module pc (

@@ -1,7 +1,8 @@
 /*
 Flags register
 
-4 bit registers that updates every clock cycle where c14 is on, asynch reset
+Specifications:
+4 bit register that updates every clock cycle where c14 is on, asynch reset
 */
 
 module flags (
