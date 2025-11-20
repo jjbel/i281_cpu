@@ -53,3 +53,10 @@ When game mode is on, then each LED of the 8-segment display is independently co
 
 <img width="488" height="520" alt="image" src="https://github.com/user-attachments/assets/9acd9924-92a8-482f-9e9d-bc9f3c68103a" />
 
+## ALU
+The ALU has 4 main operations: Shift left, Shift right, Addition and Subtraction. One of these operations will be chosen according to the input control bits. The ALU is a purely combinational block and does not need to driven by a clock signal.
+
+Testbench of ALU:
+<img width="600" height="150" alt="testbench_waveform" src="https://github.com/user-attachments/assets/2df1b209-3003-4f6e-a943-173e89a60b4e" />
+
+
