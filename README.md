@@ -13,4 +13,4 @@ References:
 
 <img width="1000" height="700" alt="image" src="https://github.com/user-attachments/assets/dbc8d160-78f1-4d66-be11-330c1e32d582" />
 
-Not mentioned in the diagram are the assumed `clock` (positive edge-triggered) and `reset` (asynchronous and active high) nets.
+Not mentioned in the diagram are the assumed `clock` (positive edge-triggered), `reset` (asynchronous and active high) and 'run' (asynchronous and active high) nets.
