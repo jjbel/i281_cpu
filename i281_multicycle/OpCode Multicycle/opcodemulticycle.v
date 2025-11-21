@@ -7,6 +7,16 @@ input instruction[7:0] from multicycle decoder
 output output_from_multicycle_opcode
 */
 
+/*
+Multicycle 8 bit instruction set:
+XXXX XXXX
+0001 c4c5c6c7 : GCD of (c4,c5 select) and (c6,c7 select)
+0010 c4c5c6c7 : Multiply of (c4,c5 select) and (c6,c7 select)
+0011 c4c5c6c7 : Divide of (c4,c5 select) and (c6,c7 select)
+0100 c4c5c6c7 : Modulus of (c4,c5 select) and (c6,c7 select)
+0101 abcd : Random Number generate < abcd 
+*/
+
 module opcodemulticycle (
     input run,
     input clock,
@@ -17,8 +27,21 @@ module opcodemulticycle (
     output reg [7:0] output_from_multicycle_opcode
 );
 
+reg [3:0] instruction;
+integer state;
+
+always@(output_to_multicycle_opcode)
+begin
+    instruction = output_to_multicycle_opcode[7:4];
+    state <= 0;
+end
+
+
 always@(posedge clock or posedge reset)
 begin
+
+    opcode_next_instruction_trigger <= 0;
+
     if(reset)
     begin
         output_from_multicycle_opcode <= 8'b0;
@@ -28,8 +51,28 @@ begin
     else 
     begin
         //add FSM logic here for each input instruction possible
-        output_from_multicycle_opcode <= output_to_multicycle_opcode;
-        opcode_next_instruction_trigger <= 0;
+        // output_from_multicycle_opcode <= output_to_multicycle_opcode;
+        // opcode_next_instruction_trigger <= 0;
+        
+        //Multiply: (shift addition multiplier)
+        case(state)
+        
+        endcase
+        
+        //Divider: (shit subtract divider)
+        case(state)
+
+        endcase
+
+        //Modulus: (Divider FSM but record modulus)
+        case(state)
+
+        endcase
+
+        //Random Number: (time counter, iterate x_(n+1) = (a*x_n + b)%(abcd))
+        case(state)
+
+        endcase
     end
 end
 
