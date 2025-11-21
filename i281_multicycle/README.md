@@ -1,16 +1,16 @@
-# i281: Baseline CPU
+# i281: Multicycle CPU
 
 ## Structural Modelling: Diagram
 
-<img width="1000" height="700" alt="image" src="https://github.com/user-attachments/assets/dbc8d160-78f1-4d66-be11-330c1e32d582" />
+<img width="800" height="590" alt="image" src="https://github.com/user-attachments/assets/dbc8d160-78f1-4d66-be11-330c1e32d582" />
 
-Not mentioned in the diagram are the assumed `clock` (positive edge-triggered) and `reset` (asynchronous and active high) nets.
+Not mentioned in the diagram are the assumed `clock` (positive edge-triggered), `reset` (asynchronous and active high) and `run` (asynchronous and active high) nets.
 
 ## Folder Structure
 
 There are subfolders for each of the following modules: 
-- Combinational: ALU, PC Update Logic, Control Logic, OpCode Decoder
-- Registers: Code Memory, Data Memory, Flags, PC, ALU Registers (named "Registers")
+- Combinational: ALU, PC Update Logic, Control Logic, OpCode Decoder, Multicycle Deocder
+- Registers: Code Memory, Data Memory, Flags, PC, ALU Registers (named "Registers"), Multicycle FSM Opcode decoder 
 - Toplevel: Named i281 Toplevel
 
 Each combinational module folder has a README file, the Verilog file, the Verilog testbench file and a dump file included.
@@ -52,11 +52,7 @@ When multiple OpCodes produce identical control signals, this is known as OpCode
 
 From the 16 bits supplied to the OpCode decoder, it requires only the first 8 MSB to decide the control bit commands.
 
-## 8 Segment Display
-Data memory has 16 registers of 8 bits each = 16 bytes of data. The first 8 bytes (out of 16) of the data memory act as a video card, as they command the 8-7 segment displays what to output. When game mode is off, then only the last 4 bits of the $i^{th}$ register/byte will affect the 0–9 outputs of the $i^{th}$ display. Changing the first 4 bits while keeping the last 4 constant will not affect the displayed digit. (4 bits since least number required to represent digits 0-9). (The remaining 8 bytes act purely as data registers, as they don’t affect the displays).
+## Netlist
 
-<img width="420" height="530" alt="image" src="https://github.com/user-attachments/assets/99116187-5e00-42fa-a30a-b098eb73a088" />
+<img width="2167" height="397" alt="netlist_i281_multicycle" src="https://github.com/user-attachments/assets/a788ef4a-5b4f-4c6e-8ee6-920cd8ccb874" />
 
-When game mode is on, then each LED of the 8-segment display is independently commanded; hence we use the 7 LSB bits of each register since there are 7 independent segments.
-
-<img width="488" height="520" alt="image" src="https://github.com/user-attachments/assets/9acd9924-92a8-482f-9e9d-bc9f3c68103a" />
