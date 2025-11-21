@@ -1,0 +1,656 @@
+$date
+	Fri Nov 21 22:01:55 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module i281_toplevel_tb $end
+$var wire 16 ! switches [15:0] $end
+$var reg 1 " clock $end
+$var reg 1 # reset $end
+$var reg 1 $ run $end
+$scope module dut $end
+$var wire 1 % c3 $end
+$var wire 1 " clock $end
+$var wire 1 # reset $end
+$var wire 1 $ run $end
+$var wire 16 & switches [15:0] $end
+$var wire 8 ' register_output_two [7:0] $end
+$var wire 8 ( reg_in [7:0] $end
+$var wire 27 ) op_in [26:0] $end
+$var wire 6 * next_pc [5:0] $end
+$var wire 16 + instruction [15:0] $end
+$var wire 4 , flag_in [3:0] $end
+$var wire 8 - dmem_input_mux_out [7:0] $end
+$var wire 8 . data_memory_out [7:0] $end
+$var wire 6 / current_pc [5:0] $end
+$var wire 18 0 ctrl_out [1:18] $end
+$var wire 8 1 alu_result_mux_out [7:0] $end
+$var wire 8 2 alu_result [7:0] $end
+$var wire 8 3 alu_in_two [7:0] $end
+$var wire 8 4 alu_in_one [7:0] $end
+$var wire 4 5 alu_flags [3:0] $end
+$scope module ALU $end
+$var wire 1 6 c12 $end
+$var wire 1 7 c13 $end
+$var wire 8 8 alu_in_two [7:0] $end
+$var wire 8 9 alu_in_one [7:0] $end
+$var reg 4 : alu_flags [3:0] $end
+$var reg 8 ; alu_result [7:0] $end
+$var reg 9 < catch_flags [8:0] $end
+$upscope $end
+$scope module ALU_Result_Mux $end
+$var wire 8 = a [7:0] $end
+$var wire 8 > b [7:0] $end
+$var wire 1 ? s $end
+$var wire 8 @ out [7:0] $end
+$upscope $end
+$scope module ALU_Source_Mux $end
+$var wire 8 A a [7:0] $end
+$var wire 1 B s $end
+$var wire 8 C out [7:0] $end
+$var wire 8 D b [7:0] $end
+$upscope $end
+$scope module CODE_MEMORY $end
+$var wire 1 E c1 $end
+$var wire 1 " clock $end
+$var wire 16 F curr_instruction [15:0] $end
+$var wire 16 G inp [15:0] $end
+$var wire 1 # reset $end
+$var wire 1 $ run $end
+$var wire 6 H write_select [5:0] $end
+$var wire 6 I read_select [5:0] $end
+$var integer 32 J i [31:0] $end
+$scope module add17to32 $end
+$var wire 16 K b0I [15:0] $end
+$var wire 16 L b10I [15:0] $end
+$var wire 16 M b11I [15:0] $end
+$var wire 16 N b12I [15:0] $end
+$var wire 16 O b13I [15:0] $end
+$var wire 16 P b14I [15:0] $end
+$var wire 16 Q b15I [15:0] $end
+$var wire 16 R b1I [15:0] $end
+$var wire 16 S b2I [15:0] $end
+$var wire 16 T b3I [15:0] $end
+$var wire 16 U b4I [15:0] $end
+$var wire 16 V b5I [15:0] $end
+$var wire 16 W b6I [15:0] $end
+$var wire 16 X b7I [15:0] $end
+$var wire 16 Y b8I [15:0] $end
+$var wire 16 Z b9I [15:0] $end
+$upscope $end
+$scope module add1to16 $end
+$var wire 16 [ b0I [15:0] $end
+$var wire 16 \ b10I [15:0] $end
+$var wire 16 ] b11I [15:0] $end
+$var wire 16 ^ b12I [15:0] $end
+$var wire 16 _ b13I [15:0] $end
+$var wire 16 ` b14I [15:0] $end
+$var wire 16 a b15I [15:0] $end
+$var wire 16 b b1I [15:0] $end
+$var wire 16 c b2I [15:0] $end
+$var wire 16 d b3I [15:0] $end
+$var wire 16 e b4I [15:0] $end
+$var wire 16 f b5I [15:0] $end
+$var wire 16 g b6I [15:0] $end
+$var wire 16 h b7I [15:0] $end
+$var wire 16 i b8I [15:0] $end
+$var wire 16 j b9I [15:0] $end
+$upscope $end
+$scope module add33to48 $end
+$var wire 16 k b0I [15:0] $end
+$var wire 16 l b10I [15:0] $end
+$var wire 16 m b11I [15:0] $end
+$var wire 16 n b12I [15:0] $end
+$var wire 16 o b13I [15:0] $end
+$var wire 16 p b14I [15:0] $end
+$var wire 16 q b15I [15:0] $end
+$var wire 16 r b1I [15:0] $end
+$var wire 16 s b2I [15:0] $end
+$var wire 16 t b3I [15:0] $end
+$var wire 16 u b4I [15:0] $end
+$var wire 16 v b5I [15:0] $end
+$var wire 16 w b6I [15:0] $end
+$var wire 16 x b7I [15:0] $end
+$var wire 16 y b8I [15:0] $end
+$var wire 16 z b9I [15:0] $end
+$upscope $end
+$scope module add49to64 $end
+$var wire 16 { b0I [15:0] $end
+$var wire 16 | b10I [15:0] $end
+$var wire 16 } b11I [15:0] $end
+$var wire 16 ~ b12I [15:0] $end
+$var wire 16 !" b13I [15:0] $end
+$var wire 16 "" b14I [15:0] $end
+$var wire 16 #" b15I [15:0] $end
+$var wire 16 $" b1I [15:0] $end
+$var wire 16 %" b2I [15:0] $end
+$var wire 16 &" b3I [15:0] $end
+$var wire 16 '" b4I [15:0] $end
+$var wire 16 (" b5I [15:0] $end
+$var wire 16 )" b6I [15:0] $end
+$var wire 16 *" b7I [15:0] $end
+$var wire 16 +" b8I [15:0] $end
+$var wire 16 ," b9I [15:0] $end
+$upscope $end
+$upscope $end
+$scope module CONTROL_LOGIC $end
+$var wire 27 -" op_in [26:0] $end
+$var wire 4 ." flag_in [3:0] $end
+$var reg 18 /" ctrl_out [1:18] $end
+$upscope $end
+$scope module DATA_MEMORY $end
+$var wire 1 0" c17 $end
+$var wire 1 " clock $end
+$var wire 8 1" data_memory_output [7:0] $end
+$var wire 4 2" read_select [3:0] $end
+$var wire 1 # reset $end
+$var wire 1 $ run $end
+$var wire 4 3" write_select [3:0] $end
+$var wire 8 4" inp [7:0] $end
+$var integer 32 5" i [31:0] $end
+$scope module addr $end
+$var wire 8 6" b0I [7:0] $end
+$var wire 8 7" b10I [7:0] $end
+$var wire 8 8" b11I [7:0] $end
+$var wire 8 9" b12I [7:0] $end
+$var wire 8 :" b13I [7:0] $end
+$var wire 8 ;" b14I [7:0] $end
+$var wire 8 <" b15I [7:0] $end
+$var wire 8 =" b1I [7:0] $end
+$var wire 8 >" b2I [7:0] $end
+$var wire 8 ?" b3I [7:0] $end
+$var wire 8 @" b4I [7:0] $end
+$var wire 8 A" b5I [7:0] $end
+$var wire 8 B" b6I [7:0] $end
+$var wire 8 C" b7I [7:0] $end
+$var wire 8 D" b8I [7:0] $end
+$var wire 8 E" b9I [7:0] $end
+$upscope $end
+$upscope $end
+$scope module DMEM_Input_Mux $end
+$var wire 8 F" b [7:0] $end
+$var wire 1 G" s $end
+$var wire 8 H" out [7:0] $end
+$var wire 8 I" a [7:0] $end
+$upscope $end
+$scope module FLAGS $end
+$var wire 1 J" c14 $end
+$var wire 1 " clock $end
+$var wire 4 K" flag_input [3:0] $end
+$var wire 1 # reset $end
+$var wire 1 $ run $end
+$var reg 4 L" flag_reg [3:0] $end
+$upscope $end
+$scope module OPCODE_DECODER $end
+$var wire 1 M" dec_en $end
+$var wire 8 N" opcode_in [7:0] $end
+$var wire 1 O" y15 $end
+$var wire 1 P" y12 $end
+$var wire 1 Q" y1 $end
+$var wire 27 R" opcode_out [26:0] $end
+$scope module decoder1 $end
+$var wire 1 M" dec_en $end
+$var wire 4 S" dec_in [3:0] $end
+$var wire 16 T" dec_out [15:0] $end
+$upscope $end
+$scope module decoder2 $end
+$var wire 1 Q" dec_en $end
+$var wire 2 U" dec_in [1:0] $end
+$var wire 4 V" dec_out [3:0] $end
+$upscope $end
+$scope module decoder3 $end
+$var wire 1 P" dec_en $end
+$var wire 1 W" dec_in $end
+$var wire 2 X" dec_out [1:0] $end
+$upscope $end
+$scope module decoder4 $end
+$var wire 1 O" dec_en $end
+$var wire 2 Y" dec_in [1:0] $end
+$var wire 4 Z" dec_out [3:0] $end
+$upscope $end
+$upscope $end
+$scope module PC_UPDATE $end
+$var wire 1 [" c2 $end
+$var wire 6 \" offset [5:0] $end
+$var wire 6 ]" next_pc [5:0] $end
+$var wire 6 ^" current_pc_plus_1 [5:0] $end
+$var wire 6 _" current_pc [5:0] $end
+$upscope $end
+$scope module PROGRAM_COUNTER $end
+$var wire 1 % c3 $end
+$var wire 1 " clock $end
+$var wire 6 `" pc_input [5:0] $end
+$var wire 1 # reset $end
+$var wire 1 $ run $end
+$var reg 6 a" pc_reg [5:0] $end
+$upscope $end
+$scope module REGISTERS $end
+$var wire 1 b" c10 $end
+$var wire 1 c" c4 $end
+$var wire 1 d" c5 $end
+$var wire 1 e" c6 $end
+$var wire 1 f" c7 $end
+$var wire 1 g" c8 $end
+$var wire 1 h" c9 $end
+$var wire 1 " clock $end
+$var wire 1 # reset $end
+$var wire 1 $ run $end
+$var wire 8 i" inp [7:0] $end
+$var reg 8 j" A [7:0] $end
+$var reg 8 k" B [7:0] $end
+$var reg 8 l" C [7:0] $end
+$var reg 8 m" D [7:0] $end
+$var reg 8 n" output_one [7:0] $end
+$var reg 8 o" output_two [7:0] $end
+$upscope $end
+$scope module REG_Writeback_Mux $end
+$var wire 8 p" a [7:0] $end
+$var wire 8 q" b [7:0] $end
+$var wire 1 r" s $end
+$var wire 8 s" out [7:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0 s"
+0r"
+b111 q"
+b0 p"
+b0 o"
+b0 n"
+b0 m"
+b0 l"
+b0 k"
+b0 j"
+b0 i"
+0h"
+0g"
+0f"
+0e"
+0d"
+0c"
+1b"
+b100000 a"
+b100001 `"
+b100000 _"
+b100001 ^"
+b100001 ]"
+b0 \"
+0["
+b0 Z"
+b0 Y"
+b0 X"
+0W"
+b0 V"
+b0 U"
+b1000 T"
+b11 S"
+b1000000 R"
+0Q"
+0P"
+0O"
+b110000 N"
+1M"
+b0 L"
+b100 K"
+0J"
+b0 I"
+b0 H"
+0G"
+b0 F"
+b0 E"
+b111 D"
+b1000 C"
+b101 B"
+b100 A"
+b110 @"
+b1 ?"
+b10 >"
+b11 ="
+b0 <"
+b0 ;"
+b0 :"
+b0 9"
+b0 8"
+b0 7"
+b111 6"
+b10000 5"
+b0 4"
+b0 3"
+b0 2"
+b111 1"
+00"
+b1000000100001000 /"
+b0 ."
+b1000000 -"
+b0 ,"
+b0 +"
+b0 *"
+b0 )"
+b0 ("
+b0 '"
+b0 &"
+b1110000011101110 %"
+b101000000000001 $"
+b0 #"
+b0 ""
+b0 !"
+b0 ~
+b0 }
+b0 |
+b1110000011110100 {
+b1001100100000000 z
+b1111001100001000 y
+b1101011100000000 x
+b110110000000000 w
+b1000110000001000 v
+b1111001100001110 u
+b1101001100000000 t
+b11010000000000 s
+b1000110000001000 r
+b101010000000001 q
+b1011100100000001 p
+b1011110100000000 o
+b1111001100000010 n
+b1101111000000000 m
+b1001110100000001 l
+b11000000000000 k
+b0 j
+b0 i
+b0 h
+b0 g
+b0 f
+b0 e
+b0 d
+b0 c
+b1110000000011110 b
+b0 a
+b0 `
+b0 _
+b0 ^
+b0 ]
+b0 \
+b0 [
+b0 Z
+b0 Y
+b0 X
+b0 W
+b0 V
+b0 U
+b0 T
+b0 S
+b0 R
+b0 Q
+b0 P
+b0 O
+b0 N
+b0 M
+b0 L
+b0 K
+b1000000 J
+b100000 I
+b0 H
+b0 G
+b11000000000000 F
+0E
+b0 D
+b110000 C
+0B
+b110000 A
+b0 @
+1?
+b0 >
+b0 =
+b0 <
+b0 ;
+b100 :
+b0 9
+b110000 8
+07
+06
+b100 5
+b0 4
+b110000 3
+b0 2
+b0 1
+b1000000100001000 0
+b100000 /
+b111 .
+b0 -
+b0 ,
+b11000000000000 +
+b100001 *
+b1000000 )
+b0 (
+b0 '
+b0 &
+z%
+0$
+1#
+0"
+b0 !
+$end
+#10000
+b10000 5"
+b1000000 J
+1"
+#20000
+0"
+#30000
+b1000000 J
+b10000 5"
+1"
+#40000
+0"
+0#
+#45000
+1$
+#50000
+b0 5"
+b0 J
+1"
+#60000
+0"
+#70000
+1"
+#80000
+0"
+#90000
+1"
+#100000
+0"
+#110000
+1"
+#120000
+0"
+#130000
+1"
+#140000
+0"
+#150000
+1"
+#160000
+0"
+#170000
+1"
+#180000
+0"
+#190000
+1"
+#200000
+0"
+#210000
+1"
+#220000
+0"
+#230000
+1"
+#240000
+0"
+#250000
+1"
+#260000
+0"
+#270000
+1"
+#280000
+0"
+#290000
+1"
+#300000
+0"
+#310000
+1"
+#320000
+0"
+#330000
+1"
+#340000
+0"
+#350000
+1"
+#360000
+0"
+#370000
+1"
+#380000
+0"
+#390000
+1"
+#400000
+0"
+#410000
+1"
+#420000
+0"
+#430000
+1"
+#440000
+0"
+#450000
+1"
+#460000
+0"
+#470000
+1"
+#480000
+0"
+#490000
+1"
+#500000
+0"
+#510000
+1"
+#520000
+0"
+#530000
+1"
+#540000
+0"
+#550000
+1"
+#560000
+0"
+#570000
+1"
+#580000
+0"
+#590000
+1"
+#600000
+0"
+#610000
+1"
+#620000
+0"
+#630000
+1"
+#640000
+0"
+#650000
+1"
+#660000
+0"
+#670000
+1"
+#680000
+0"
+#690000
+1"
+#700000
+0"
+#710000
+1"
+#720000
+0"
+#730000
+1"
+#740000
+0"
+#750000
+1"
+#760000
+0"
+#770000
+1"
+#780000
+0"
+#790000
+1"
+#800000
+0"
+#810000
+1"
+#820000
+0"
+#830000
+1"
+#840000
+0"
+#850000
+1"
+#860000
+0"
+#870000
+1"
+#880000
+0"
+#890000
+1"
+#900000
+0"
+#910000
+1"
+#920000
+0"
+#930000
+1"
+#940000
+0"
+#950000
+1"
+#960000
+0"
+#970000
+1"
+#980000
+0"
+#990000
+1"
+#1000000
+0"
+#1010000
+1"
+#1020000
+0"
+#1030000
+1"
+#1040000
+0"
+#1045000

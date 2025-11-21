@@ -11,7 +11,8 @@ Not mentioned in the diagram are the assumed `clock` (positive edge-triggered) a
 There are subfolders for each of the following modules: 
 - Combinational: ALU, PC Update Logic, Control Logic, OpCode Decoder
 - Registers: Code Memory, Data Memory, Flags, PC, ALU Registers (named "Registers")
-- Toplevel: Named i281 Toplevel
+- Assembler Folder: Contains `i281assembler.java`, the `.asm` file required and 5 Verilog files
+The i281 Toplevel is present in this directory itself.
 
 Each combinational module folder has a README file, the Verilog file, the Verilog testbench file and a dump file included.
 Each register folder only has the Verilog file.
