@@ -140,6 +140,7 @@ module i281_toplevel (
       run,
       clock,
       reset,
+      c3,
       next_pc,
       current_pc
   );

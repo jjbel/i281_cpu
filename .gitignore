@@ -8,3 +8,7 @@ UrJTAG
 # iverilog, gtkwave
 *.vcd
 a.out
+
+# assembler
+*.class
+*.bin
