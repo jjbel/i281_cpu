@@ -11,7 +11,7 @@ Outputs: ctrl_out (18-wide)
 
 module controllogic (
     input  wire [26:0] op_in,
-    input  wire [ 3:0] flag_in,
+    input  wire [3:0] flag_in,
     output reg  [1:18] ctrl_out
 );
 

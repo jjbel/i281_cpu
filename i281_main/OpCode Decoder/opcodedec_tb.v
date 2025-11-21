@@ -21,7 +21,7 @@ module opcodedec_tb ();
     // Stimulus
     integer i;
     initial begin
-        for (i = 0; i < 256; i++) begin
+        for (i = 0; i < 256; i = i+1) begin
             opcode_in = i;
             #10;
         end
