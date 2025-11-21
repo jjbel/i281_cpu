@@ -48,7 +48,7 @@ initial begin
     alu_in_two = 8'd50;
     #10;
 
-    // End simulation
+    //finish simulation
     #20;
     $finish;
 end
