@@ -34,6 +34,7 @@ module i281_toplevel (
   wire [7:0] data_memory_out, dmem_input_mux_out;
 
   wire multicycle_flag;
+  wire opcode_next_instruction_trigger;
 
   //interconnections
 
@@ -61,6 +62,8 @@ module i281_toplevel (
     clock,
     reset,
     output_to_multicycle_opcode,
+    flag_in,
+    opcode_next_instruction_trigger,
     output_from_multicycle_opcode
   );
 
@@ -153,6 +156,8 @@ module i281_toplevel (
   );
 
   pc_update PC_UPDATE (
+      multicycle_flag,
+      opcode_next_instruction_trigger,
       current_pc,
       instruction[5:0],
       ctrl_out[2],

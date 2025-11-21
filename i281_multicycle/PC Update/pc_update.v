@@ -16,12 +16,27 @@ Outputs: opcode_out (27-bit)
 */
 
 module pc_update (
+    input multicycle_flag,
+    input opcode_next_instruction_trigger,
     input [5:0] current_pc,
     input [5:0] offset,  // lower 6 bits of instruction
     input c2,
-    output [5:0] next_pc
+    output reg [5:0] next_pc
 );
-  wire [5:0] current_pc_plus_1;
-  assign current_pc_plus_1 = current_pc + 1'b1;
-  assign next_pc = c2 ? (current_pc_plus_1 + offset) : current_pc_plus_1;
+  reg [5:0] current_pc_plus_1;
+  
+  always @(*) begin
+    next_pc = current_pc;
+    current_pc_plus_1 = current_pc + 1'b1;
+    if (!multicycle_flag) begin
+        //single cycle instruction
+        next_pc = c2 ? (current_pc_plus_1 + offset) : current_pc_plus_1;
+    end else begin
+        //multicycle instruction
+        if (opcode_next_instruction_trigger) begin
+            next_pc = current_pc_plus_1;
+        end
+    end
+	end
+
 endmodule
