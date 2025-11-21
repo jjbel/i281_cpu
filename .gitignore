@@ -6,5 +6,8 @@ UrJTAG
 *.bak
 
 # iverilog, gtkwave
-*.vcd
 a.out
+
+# assembler
+*.class
+*.bin
