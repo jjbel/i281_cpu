@@ -53,7 +53,7 @@ When multiple OpCodes produce identical control signals, this is known as OpCode
 From the 16 bits supplied to the OpCode decoder, it requires only the first 8 MSB to decide the control bit commands.
 
 ## 8 Segment Display
-Data memory has 16 registers of 8 bits each = 16 bytes of data. The first 8 bytes (out of 16) of the data memory act as a video card, as they command the 8–7 segment displays what to output. When game mode is off, then only the last 4 bits of the $i^{th}$ register/byte will affect the 0–9 outputs of the $i^{th}$ display. Changing the first 4 bits while keeping the last 4 constant will not affect the displayed digit. (4 bits since least number required to represent digits 0–9). (The remaining 8 bytes act purely as data registers, as they don’t affect the displays).
+Data memory has 16 registers of 8 bits each = 16 bytes of data. The first 8 bytes (out of 16) of the data memory act as a video card, as they command the 8-7 segment displays what to output. When game mode is off, then only the last 4 bits of the $i^{th}$ register/byte will affect the 0–9 outputs of the $i^{th}$ display. Changing the first 4 bits while keeping the last 4 constant will not affect the displayed digit. (4 bits since least number required to represent digits 0-9). (The remaining 8 bytes act purely as data registers, as they don’t affect the displays).
 
 <img width="420" height="530" alt="image" src="https://github.com/user-attachments/assets/99116187-5e00-42fa-a30a-b098eb73a088" />
 
