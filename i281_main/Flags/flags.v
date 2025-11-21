@@ -13,19 +13,14 @@ module flags (
     output reg [3:0] flag_reg
 );
 
-always@(posedge clock or posedge reset)
-begin
-    if(reset)
-    begin
-        flag_reg <= 4'b0;
+  always @(posedge clock or posedge reset) begin
+    if (reset) begin
+      flag_reg <= 4'b0;
+    end else begin
+      if (c14) begin
+        flag_reg <= flag_input;
+      end
     end
-    else
-    begin
-        if(c14)
-        begin
-            flag_reg <= flag_input;
-        end
-    end
-end
+  end
 
 endmodule

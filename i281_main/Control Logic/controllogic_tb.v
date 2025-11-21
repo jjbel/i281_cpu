@@ -22,12 +22,12 @@ module controllogic_tb ();
   integer i, j, k;
   initial begin
 
-    for (i = 0; i < 23; i = i+1) begin
+    for (i = 0; i < 23; i = i + 1) begin
       op_in[22:0] = 23'b0;
       op_in[i] = 1;
-      for (j = 0; j < 16; j = j+1) begin
+      for (j = 0; j < 16; j = j + 1) begin
         op_in[26:23] = j;
-        for (k = 0; k < 16; k = k+1) begin
+        for (k = 0; k < 16; k = k + 1) begin
           flag_in = k;
           #10;
         end

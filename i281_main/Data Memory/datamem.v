@@ -22,27 +22,21 @@ module datamem (
     output reg [7:0] data_memory_output
 );
 
-integer i; //for loops
+  integer i;  //for loops
 
-reg [7:0] data_memory_reg[15:0];
+  reg [7:0] data_memory_reg[15:0];
 
-always@(posedge clock or posedge reset)
-begin
+  always @(posedge clock or posedge reset) begin
     i = 0;  // else infers latch
 
-    if(reset)
-    begin
-        for(i = 0; i < 16; i = i+1)
-            data_memory_reg[i] <= 8'b0; //reset all to 0
+    if (reset) begin
+      for (i = 0; i < 16; i = i + 1) data_memory_reg[i] <= 8'b0;  //reset all to 0
+    end else begin
+      data_memory_output <= data_memory_reg[read_select];
+      if (c17) begin
+        data_memory_reg[write_select] <= inp;
+      end
     end
-    else 
-    begin
-        data_memory_output <= data_memory_reg[read_select];
-        if(c17)
-        begin
-            data_memory_reg[write_select] <= inp;
-        end
-    end
-end
+  end
 
 endmodule
