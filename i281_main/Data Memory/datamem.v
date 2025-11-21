@@ -13,6 +13,7 @@ data_memory_reg: internal 16 registers of 8 bits
 */
 
 module datamem (
+    input run,
     input clock,
     input reset,
     input c17,
@@ -32,9 +33,11 @@ module datamem (
     if (reset) begin
       for (i = 0; i < 16; i = i + 1) data_memory_reg[i] <= 8'b0;  //reset all to 0
     end else begin
+      if(run) begin
       data_memory_output <= data_memory_reg[read_select];
       if (c17) begin
         data_memory_reg[write_select] <= inp;
+      end
       end
     end
   end

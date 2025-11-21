@@ -13,6 +13,7 @@ code_memory_reg: internal 64 registers of 16 bits
 */
 
 module codemem (
+    input run,
     input clock,
     input reset,
     input c1,
@@ -27,15 +28,19 @@ module codemem (
   reg [15:0] code_memory_reg[63:0];
 
   always @(posedge clock or posedge reset) begin
-    i = 0;  // infers latch
-    if (reset) begin
-      for (i = 0; i < 64; i = i + 1) code_memory_reg[i] <= 16'b0;  //reset all to 0
-    end else begin
-      curr_instruction <= code_memory_reg[read_select];
-      if (c1) begin
-        code_memory_reg[write_select] <= inp;
-      end
+
+      i = 0;  // infers latch
+      if (reset) begin
+        for (i = 0; i < 64; i = i + 1) code_memory_reg[i] <= 16'b0;  //reset all to 0
+      end else begin
+        if(run) begin
+        curr_instruction <= code_memory_reg[read_select];
+        if (c1) begin
+          code_memory_reg[write_select] <= inp;
+        end
+        end
     end
+
   end
 
 endmodule

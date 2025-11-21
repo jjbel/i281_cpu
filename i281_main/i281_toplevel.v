@@ -4,6 +4,7 @@ i281 Top Level Entity
 
 //module includes
 module i281_toplevel (
+    input run,
     input clock,
     input reset,
     input [15:0] switches
@@ -32,6 +33,7 @@ module i281_toplevel (
   //interconnections
 
   codemem CODE_MEMORY (
+      run,
       clock,
       reset,
       ctrl_out[1],
@@ -64,6 +66,7 @@ module i281_toplevel (
 
 
   flags FLAGS (
+      run,
       clock,
       reset,
       ctrl_out[14],
@@ -72,6 +75,7 @@ module i281_toplevel (
   );
 
   register REGISTERS (
+      run,
       clock,
       reset,
       ctrl_out[8],
@@ -108,6 +112,7 @@ module i281_toplevel (
   );
 
   datamem DATA_MEMORY (
+      run,
       clock,
       reset,
       ctrl_out[17],
@@ -132,6 +137,7 @@ module i281_toplevel (
   );
 
   pc PROGRAM_COUNTER (
+      run,
       clock,
       reset,
       next_pc,

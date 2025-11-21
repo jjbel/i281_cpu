@@ -6,6 +6,7 @@ Specifications:
 */
 
 module flags (
+    input run,
     input clock,
     input reset,
     input c14,
@@ -14,13 +15,15 @@ module flags (
 );
 
   always @(posedge clock or posedge reset) begin
-    if (reset) begin
-      flag_reg <= 4'b0;
-    end else begin
-      if (c14) begin
-        flag_reg <= flag_input;
+      if (reset) begin
+        flag_reg <= 4'b0;
+      end else begin
+        if(run) begin
+        if (c14) begin
+          flag_reg <= flag_input;
+        end
+        end
       end
-    end
   end
 
 endmodule

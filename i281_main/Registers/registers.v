@@ -12,6 +12,7 @@ output_two: second mux output port
 */
 
 module register (
+    input run,
     input clock,
     input reset,
     input c8,
@@ -38,7 +39,9 @@ module register (
       B <= 8'b0;
       C <= 8'b0;
       D <= 8'b0;
-    end else begin
+    end 
+    else begin
+      if (run) begin
       case ({
         c4, c5
       })
@@ -66,6 +69,7 @@ module register (
           2'b10: C <= inp;
           2'b11: D <= inp;
         endcase
+      end
       end
     end
   end
