@@ -24,7 +24,7 @@ begin
         output_from_multicycle_opcode <= 8'b0;
         opcode_next_instruction_trigger <= 0;
     end
-
+    
     else 
     begin
         //add FSM logic here for each input instruction possible
