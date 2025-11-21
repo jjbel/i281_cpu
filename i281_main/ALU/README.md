@@ -9,7 +9,7 @@ The ALU consists of the following specifications:
 
 The ALU circuit is:
 
-<img src = "alu_circuit_diagram.png" width = "70%">
+<img src = "images/alu_circuit_diagram.png" width = "70%">
 
 Since there are 2 input select lines there are 4 total selection cases. We implement this through a case statement. At each case we have a different operation implemented and the carry, overflow, zero and negative flag values are calculated accordingly. 
 
@@ -19,4 +19,4 @@ We write a testbench for the ALU with the following simple testcases:
 3. Right shift 0x81
 4. Subtract 20 - 50
 
-<img src = "testbench_waveform.png" width = "80%">
+<img src = "images/testbench_waveform.png" width = "80%">
