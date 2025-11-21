@@ -5,7 +5,8 @@ i281 Top Level Entity
 //module includes
 module i281_toplevel (
     input clock,
-    input reset
+    input reset,
+    input [15:0] switches
 );
   //internal wiring
   wire [15:0] instruction;
@@ -14,13 +15,19 @@ module i281_toplevel (
   wire [26:0] op_in;
   wire [ 3:0] flag_in;
 
-  wire [ 7:0] alu_input_one;
-  wire [ 7:0] alu_input_two;
+  wire [ 7:0] alu_in_one;
+  wire [ 7:0] alu_in_two;
   wire [ 7:0] alu_result;
   wire [ 3:0] alu_flags;
 
   wire [ 7:0] alu_result_mux_out;
   wire [ 7:0] register_output_two;
+
+  wire [ 7:0] reg_in;
+
+  wire [5:0] current_pc, next_pc;
+
+  wire [7:0] data_memory_out, dmem_input_mux_out;
 
   //interconnections
 
@@ -30,7 +37,7 @@ module i281_toplevel (
       ctrl_out[1],
       alu_result_mux_out[5:0],
       switches,
-      code_read_select,
+      current_pc,
       instruction
   );
 
@@ -75,33 +82,64 @@ module i281_toplevel (
       ctrl_out[6],
       ctrl_out[7],
       reg_in,
-      alu_input_one,
+      alu_in_one,
       register_output_two
   );
 
-  mux #(8) ALU_Source_Mux (
+  mux_n #(8) ALU_Source_Mux (
       ctrl_out[11],
       instruction[15:8],
       register_output_two,
-      alu_input_two
+      alu_in_two
   );
 
-  mux #(8) ALU_Result_Mux (
+  mux_n #(8) ALU_Result_Mux (
       ctrl_out[15],
       alu_result,
       instruction[7:0],
-      write_select
+      alu_result_mux_out
   );
 
-  mux #(8) REG_Writeback_Mux (
+  mux_n #(8) REG_Writeback_Mux (
       ctrl_out[18],
       alu_result_mux_out,
       data_memory_out,
       reg_in
   );
+
+  datamem DATA_MEMORY (
+      clock,
+      reset,
+      ctrl_out[17],
+      alu_result_mux_out[3:0],
+      dmem_input_mux_out,
+      alu_result_mux_out[3:0],
+      data_memory_out
+  );
+
+  mux_n #(8) DMEM_Input_Mux (
+      ctrl_out[16],
+      register_output_two,
+      switches[7:0],
+      dmem_input_mux_out
+  );
+
+  pc_update PC_UPDATE (
+      current_pc,
+      instruction[5:0],
+      ctrl_out[2],
+      next_pc
+  );
+
+  pc PROGRAM_COUNTER (
+      clock,
+      reset,
+      next_pc,
+      current_pc
+  );
 endmodule
 
-module mux (
+module mux_n (
     input wire s,
     input wire [n-1 : 0] a,
     input wire [n-1 : 0] b,
