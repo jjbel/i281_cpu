@@ -28,6 +28,7 @@ reg [15:0] code_memory_reg[63:0];
 
 always@(posedge clock or posedge reset)
 begin
+    i = 0; // infers latch
     if(reset)
     begin
         for(i = 0; i < 64; i = i+1)

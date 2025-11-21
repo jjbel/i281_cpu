@@ -28,6 +28,8 @@ reg [7:0] data_memory_reg[15:0];
 
 always@(posedge clock or posedge reset)
 begin
+    i = 0;  // else infers latch
+
     if(reset)
     begin
         for(i = 0; i < 16; i = i+1)
