@@ -20,7 +20,23 @@ module datamem (
     input [3:0] write_select,
     input [7:0] inp,
     input [3:0] read_select,
-    output wire [7:0] data_memory_output
+    output wire [7:0] data_memory_output,
+    output wire [7:0] datamem0,
+    output wire [7:0] datamem1,
+    output wire [7:0] datamem2,
+    output wire [7:0] datamem3,
+    output wire [7:0] datamem4,
+    output wire [7:0] datamem5,
+    output wire [7:0] datamem6,
+    output wire [7:0] datamem7,
+    output wire [7:0] datamem8,
+    output wire [7:0] datamem9,
+    output wire [7:0] datamem10,
+    output wire [7:0] datamem11,
+    output wire [7:0] datamem12,
+    output wire [7:0] datamem13,
+    output wire [7:0] datamem14,
+    output wire [7:0] datamem15
 );
 
   wire [7:0] d[15:0];
@@ -60,5 +76,23 @@ module datamem (
   end
 
   assign data_memory_output = data_memory_reg[read_select];
+
+  assign datamem0 = data_memory_reg[0];
+  assign datamem1 = data_memory_reg[1];
+  assign datamem2 = data_memory_reg[2];
+  assign datamem3 = data_memory_reg[3];
+  assign datamem4 = data_memory_reg[4];
+  assign datamem5 = data_memory_reg[5];
+  assign datamem6 = data_memory_reg[6];
+  assign datamem7 = data_memory_reg[7];
+  assign datamem8 = data_memory_reg[8];
+  assign datamem9 = data_memory_reg[9];
+  assign datamem10 = data_memory_reg[10];
+  assign datamem11 = data_memory_reg[11];
+  assign datamem12 = data_memory_reg[12];
+  assign datamem13 = data_memory_reg[13];
+  assign datamem14 = data_memory_reg[14];
+  assign datamem15 = data_memory_reg[15];
+
 
 endmodule

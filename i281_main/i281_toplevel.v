@@ -7,7 +7,24 @@ module i281_toplevel (
     input run,
     input clock,
     input reset,
-    input [15:0] switches
+    input [15:0] switches,
+    output [7:0] datamem0,
+    output [7:0] datamem1,
+    output [7:0] datamem2,
+    output [7:0] datamem3,
+    output [7:0] datamem4,
+    output [7:0] datamem5,
+    output [7:0] datamem6,
+    output [7:0] datamem7,
+    output [7:0] datamem8,
+    output [7:0] datamem9,
+    output [7:0] datamem10,
+    output [7:0] datamem11,
+    output [7:0] datamem12,
+    output [7:0] datamem13,
+    output [7:0] datamem14,
+    output [7:0] datamem15
+
 );
   //internal wiring
   wire [15:0] instruction;
@@ -119,7 +136,23 @@ module i281_toplevel (
       alu_result_mux_out[3:0],
       dmem_input_mux_out,
       alu_result_mux_out[3:0],
-      data_memory_out
+      data_memory_out,
+      datamem0,
+      datamem1,
+      datamem2,
+      datamem3,
+      datamem4,
+      datamem5,
+      datamem6,
+      datamem7,
+      datamem8,
+      datamem9,
+      datamem10,
+      datamem11,
+      datamem12,
+      datamem13,
+      datamem14,
+      datamem15
   );
 
   mux_n #(8) DMEM_Input_Mux (
@@ -147,11 +180,17 @@ module i281_toplevel (
 endmodule
 
 module mux_n (
-    input wire s,
-    input wire [n-1 : 0] a,
-    input wire [n-1 : 0] b,
-    output wire [n-1 : 0] out
+    s,
+    a,
+    b,
+    out
 );
   parameter n = 1;
+  input wire s;
+  input wire [n-1 : 0] a;
+  input wire [n-1 : 0] b;
+  output wire [n-1 : 0] out;
+
   assign out = s ? b : a;
+
 endmodule
