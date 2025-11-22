@@ -22,6 +22,16 @@ Each register folder only has the Verilog file.
 - `timescale 1ns/1ps`: 1 unit = 1 nanosecond, waveform will be generated with 1 picosecond precision.
 - It has a signal instantiation block, a UUT (unit-under-test) instantiation block, a stimulus block and a block for dumping variables.
 
+## Viewing Simulation Waveform using iVerilog and GTKWave
+
+Run the following commands in the directory `i281_main`:
+
+```
+iverilog ALU/alu.v Assembler/BIOS_Hardcoded_High.v Assembler/BIOS_Hardcoded_Low.v Assembler/User_Code_High.v Assembler/User_Code_Low.v Assembler/User_Data.v "Code Memory/codemem.v" "Control Logic/controllogic.v" "Data Memory/datamem.v" Flags/flags.v "OpCode Decoder/opcodedec.v" PC/pc.v "PC Update/pc_update.v" Registers/registers.v i281_toplevel.v i281_toplevel_tb.v
+vvp a.out
+gtkwave dump.vcd
+```
+
 # CPU-Based Finite State Machine Implementation
 
 The outputs of the CPU are entirely determined by the current state and the inputs, which makes this approach fundamental to general-purpose computing.
