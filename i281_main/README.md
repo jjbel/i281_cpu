@@ -70,3 +70,7 @@ Data memory has 16 registers of 8 bits each = 16 bytes of data. The first 8 byte
 
 <img width="2168" height="458" alt="netlist_i281_main" src="https://github.com/user-attachments/assets/41e4ef61-65c7-4a32-af8c-816ad023ec62" />
 
+## Waveform of Bubble Sort:
+
+<img width="1936" height="483" alt="bubble_sort_waveform" src="https://github.com/user-attachments/assets/c0baa7cc-6241-42fc-bec0-a6c4ac04960a" />
+
