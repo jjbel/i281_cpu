@@ -7,7 +7,7 @@ module i281_toplevel (
     input run,
     input clock,
     input reset,
-    input [15:0] switches,
+    input [16:0] switches,
     output [7:0] datamem0,
     output [7:0] datamem1,
     output [7:0] datamem2,
@@ -55,40 +55,40 @@ module i281_toplevel (
   //interconnections
 
   codemem CODE_MEMORY (
-    run,
-    clock,
-    reset,
-    ctrl_out[1],
-    alu_result_mux_out[5:0],
-    switches,
-    current_pc,
-    instruction,
-    multicycle_flag
+      run,
+      clock,
+      reset,
+      ctrl_out[1],
+      alu_result_mux_out[5:0],
+      switches,
+      current_pc,
+      instruction,
+      multicycle_flag
   );
 
   multicycledecoder MULTI_DECODER (
-    multicycle_flag,
-    instruction,
-    output_to_opcode,
-    output_to_multicycle_opcode
+      multicycle_flag,
+      instruction,
+      output_to_opcode,
+      output_to_multicycle_opcode
   );
 
   opcodemulticycle OPCODE_MULTICYCLE (
-    run,
-    clock,
-    reset,
-    output_to_multicycle_opcode,
-    flag_in,
-    opcode_next_instruction_trigger,
-    output_from_multicycle_opcode
+      run,
+      clock,
+      reset,
+      output_to_multicycle_opcode,
+      flag_in,
+      opcode_next_instruction_trigger,
+      output_from_multicycle_opcode
   );
 
   opcodedec OPCODE_DECODER (
-    multicycle_flag,
-    output_to_opcode,
-    output_from_multicycle_opcode,
-    1'b1,
-    op_in   
+      multicycle_flag,
+      output_to_opcode,
+      output_from_multicycle_opcode,
+      1'b1,
+      op_in
   );
 
   controllogic CONTROL_LOGIC (
@@ -134,8 +134,8 @@ module i281_toplevel (
 
   mux_n #(8) ALU_Source_Mux (
       ctrl_out[11],
-      instruction[15:8],
       register_output_two,
+      instruction[7:0],
       alu_in_two
   );
 
@@ -200,6 +200,7 @@ module i281_toplevel (
       run,
       clock,
       reset,
+      ctrl_out[3],
       next_pc,
       current_pc
   );

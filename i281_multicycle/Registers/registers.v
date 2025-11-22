@@ -34,44 +34,45 @@ module register (
 
 
   always @(posedge clock or posedge reset) begin
+
     if (reset) begin
       A <= 8'b0;
       B <= 8'b0;
       C <= 8'b0;
       D <= 8'b0;
-    end 
-    else begin
-      if (run) begin
+
+    end else if (run & c10)
       case ({
-        c4, c5
+        c8, c9
       })
-        2'b00: output_one <= A;
-        2'b01: output_one <= B;
-        2'b10: output_one <= C;
-        2'b11: output_one <= D;
+        2'b00: A <= inp;
+        2'b01: B <= inp;
+        2'b10: C <= inp;
+        2'b11: D <= inp;
       endcase
 
-      case ({
-        c6, c7
-      })
-        2'b00: output_two <= A;
-        2'b01: output_two <= B;
-        2'b10: output_two <= C;
-        2'b11: output_two <= D;
-      endcase
+  end
 
-      if (c10) begin
-        case ({
-          c8, c9
-        })
-          2'b00: A <= inp;
-          2'b01: B <= inp;
-          2'b10: C <= inp;
-          2'b11: D <= inp;
-        endcase
-      end
-      end
-    end
+  always @(c4, c5, c6, c7) begin
+
+    case ({
+      c4, c5
+    })
+      2'b00: output_one = A;
+      2'b01: output_one = B;
+      2'b10: output_one = C;
+      2'b11: output_one = D;
+    endcase
+
+    case ({
+      c6, c7
+    })
+      2'b00: output_two = A;
+      2'b01: output_two = B;
+      2'b10: output_two = C;
+      2'b11: output_two = D;
+    endcase
+
   end
 
 endmodule

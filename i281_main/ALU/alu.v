@@ -51,18 +51,15 @@ module alu (
         alu_flags[0] = (alu_result == 0);  //zero flag
         alu_flags[1] = alu_result[7];  //negative flag
         alu_flags[2] = catch_flags[8] ^ (alu_result[7] ^ alu_in_one[7] ^ alu_in_two[7]); //overflow flag
-        // alu_flags[1] = (~(alu_in_one[7] ^ alu_in_two[7]) & (alu_result[7] ^ alu_in_one[7]));
         alu_flags[3] = catch_flags[8];  //carry flag
-        //overflow flag (operand same sign, result diff sign)
       end
       2'b11: begin
         catch_flags  = {1'b0, alu_in_one} + {1'b0, ~alu_in_two} + 1;  //9 bit padded subtraction
         alu_result   = catch_flags[7:0];
         alu_flags[0] = (alu_result == 0);  //zero flag
         alu_flags[1] = alu_result[7];  //negative flag
-        alu_flags[2] = catch_flags[8] ^ (alu_result[7] ^ alu_in_one[7] ^ ~alu_in_two[7]);
+        alu_flags[2] = catch_flags[8] ^ (alu_result[7] ^ alu_in_one[7] ^ ~alu_in_two[7]); //overflow flag
         alu_flags[3] = catch_flags[8];  //carry flag
-        //overflow flag (operand different sign, result sign differs from alu_in_one)
       end
     endcase
   end

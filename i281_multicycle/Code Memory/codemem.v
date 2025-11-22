@@ -1,5 +1,5 @@
 /*
-Code memory (64 instuctions, 16 bits each)
+Code memory (64 instuctions, 17 bits each)
 
 Specifications: 
 c1: write enable bit
@@ -9,7 +9,7 @@ read_select: 6 bit register to read from
 curr_instruction: output 16 bit instruction 
 clock and reset: clock input and reset
 
-code_memory_reg: internal 64 registers of 16 bits 
+code_memory_reg: internal 64 registers of 17 bits (1 multicycle bit added at the start)
 */
 
 module codemem (
