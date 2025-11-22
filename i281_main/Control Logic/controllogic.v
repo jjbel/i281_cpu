@@ -33,7 +33,7 @@ module controllogic (
 
     //c4,c5
     if (|{op_in[17:15], op_in[10:7], op_in[4], op_in[2]}) ctrl_out[4:5] = op_in[26:25];
-    else if (op_in[12] | op_in[5]) ctrl_out[4:5] = op_in[24:23];
+    else if (op_in[14] | op_in[12] | op_in[5]) ctrl_out[4:5] = op_in[24:23];
 
     //c6,c7
     if (|op_in[14:13]) ctrl_out[6:7] = op_in[26:25];
