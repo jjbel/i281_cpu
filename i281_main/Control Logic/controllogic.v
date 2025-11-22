@@ -22,10 +22,10 @@ module controllogic (
     if (|op_in[2:1]) ctrl_out[1] = 1;
 
     //c2
-    if (op_in[22]) ctrl_out[2] = flag_in[0] ~^ flag_in[1];
-    else if (op_in[21]) ctrl_out[2] = (~flag_in[2]) & (flag_in[0] ~^ flag_in[1]);
-    else if (op_in[20]) ctrl_out[2] = ~flag_in[2];
-    else if (op_in[19]) ctrl_out[2] = flag_in[2];
+    if (op_in[22]) ctrl_out[2] = flag_in[2] ~^ flag_in[1];
+    else if (op_in[21]) ctrl_out[2] = (~flag_in[0]) & (flag_in[2] ~^ flag_in[1]);
+    else if (op_in[20]) ctrl_out[2] = ~flag_in[0];
+    else if (op_in[19]) ctrl_out[2] = flag_in[0];
     else if (op_in[18]) ctrl_out[2] = 1;
 
     //c3

@@ -92,8 +92,8 @@ module i281_toplevel (
 
   mux_n #(8) ALU_Source_Mux (
       ctrl_out[11],
-      instruction[15:8],
       register_output_two,
+      instruction[7:0],
       alu_in_two
   );
 
@@ -140,7 +140,7 @@ module i281_toplevel (
       run,
       clock,
       reset,
-      c3,
+      ctrl_out[3],
       next_pc,
       current_pc
   );

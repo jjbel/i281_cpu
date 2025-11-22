@@ -3,6 +3,8 @@ Flags register
 
 Specifications:
 4 bit register that updates every clock cycle where c14 is on, asynch reset
+
+Flags: 3 = carry, 2 = overflow, 1 = negative, 0 = zero
 */
 
 module flags (
@@ -15,15 +17,15 @@ module flags (
 );
 
   always @(posedge clock or posedge reset) begin
-      if (reset) begin
-        flag_reg <= 4'b0;
-      end else begin
-        if(run) begin
+    if (reset) begin
+      flag_reg <= 4'b0;
+    end else begin
+      if (run) begin
         if (c14) begin
           flag_reg <= flag_input;
         end
-        end
       end
+    end
   end
 
 endmodule

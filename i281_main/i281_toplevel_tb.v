@@ -34,14 +34,15 @@ module i281_toplevel_tb ();
     reset = 0;
     #5;
     run = 1;
-    #1000;
+    #10000;
     $finish;
   end
 
   //variable dump
   initial begin
     $dumpfile("dump.vcd");
-    $dumpvars(4, i281_toplevel_tb);
+    $dumpvars(0, i281_toplevel_tb);
+    $dumpvars(0, i281_toplevel_tb.dut.DATA_MEMORY.data_memory_reg);
   end
 
 endmodule
