@@ -68,7 +68,7 @@ module i281_toplevel (
 
   multicycledecoder MULTI_DECODER (
       multicycle_flag,
-      instruction,
+      instruction[16:8],
       output_to_opcode,
       output_to_multicycle_opcode
   );

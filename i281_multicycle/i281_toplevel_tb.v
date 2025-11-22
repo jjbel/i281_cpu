@@ -10,7 +10,7 @@ module i281_toplevel_tb ();
   reg run;
   reg clock;
   reg reset;
-  wire [15:0] switches;
+  wire [16:0] switches;
   wire [7:0] datamem0;
   wire [7:0] datamem1;
   wire [7:0] datamem2;

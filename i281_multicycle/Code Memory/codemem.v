@@ -18,7 +18,7 @@ module codemem (
     input reset,
     input c1,
     input [5:0] write_select,
-    input [15:0] inp,
+    input [16:0] inp,
     input [5:0] read_select,
     output reg [16:0] curr_instruction,
     output reg multicycle_flag

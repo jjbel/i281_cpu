@@ -1,4 +1,4 @@
-/*
+    /*
 Multicycle Opcode Creater FSM (Sequential)
 
 Specifications:
@@ -28,12 +28,12 @@ module opcodemulticycle (
 );
 
 reg [3:0] instruction;
-integer state;
+reg [3:0] state;
 
-always@(output_to_multicycle_opcode)
+always@(*)
 begin
     instruction = output_to_multicycle_opcode[7:4];
-    state <= 0;
+    state = 0;
 end
 
 
@@ -54,24 +54,57 @@ begin
         // output_from_multicycle_opcode <= output_to_multicycle_opcode;
         // opcode_next_instruction_trigger <= 0;
         
-        //Multiply: (shift addition multiplier)
-        case(state)
-        
-        endcase
-        
-        //Divider: (shit subtract divider)
-        case(state)
-
-        endcase
-
-        //Modulus: (Divider FSM but record modulus)
-        case(state)
-
-        endcase
-
-        //Random Number: (time counter, iterate x_(n+1) = (a*x_n + b)%(abcd))
-        case(state)
-
+        case(instruction)
+        4'b0001:
+        begin
+            //GCD: 
+            case(state)
+            0: begin
+                output_from_multicycle_opcode <= 8'b0;
+                opcode_next_instruction_trigger <= 0;
+            end
+            endcase
+        end
+        4'b0010:
+        begin
+            //Multiply: (shift addition multiplier)
+            case(state)
+            0: begin
+                output_from_multicycle_opcode <= 8'b0;
+                opcode_next_instruction_trigger <= 0;
+            end
+            endcase
+        end
+        4'b0011:
+        begin
+            //Divider: (shit subtract divider)
+            case(state)
+            0: begin 
+                output_from_multicycle_opcode <= 8'b0;
+                opcode_next_instruction_trigger <= 0;
+            end
+            endcase
+        end
+        4'b0100:
+        begin
+            //Modulus: (Divider FSM but record modulus)
+            case(state)
+            0: begin
+                output_from_multicycle_opcode <= 8'b0;
+                opcode_next_instruction_trigger <= 0;
+            end
+            endcase
+        end
+        4'b0101:
+        begin
+            //Random Number: (time counter, iterate x_(n+1) = (a*x_n + b)%(abcd))
+            case(state)
+            0: begin
+                output_from_multicycle_opcode <= 8'b0;
+                opcode_next_instruction_trigger <= 0;
+            end
+            endcase
+        end
         endcase
     end
 end
