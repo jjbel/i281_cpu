@@ -945,56 +945,56 @@ public class i281assembler {
 		PrintWriter p2 = new PrintWriter(FF);
 		p1.print("module User_Code_Low(b0I,b1I,b2I,b3I,b4I,b5I,b6I,b7I,b8I,b9I,b10I,b11I,b12I,b13I,b14I,b15I);\r\n" + 
 				"\r\n" + 
-				"output [15:0] b0I;\r\n" + 
-				"output [15:0] b1I;\r\n" + 
-				"output [15:0] b2I;\r\n" + 
-				"output [15:0] b3I;\r\n" + 
-				"output [15:0] b4I;\r\n" + 
-				"output [15:0] b5I;\r\n" + 
-				"output [15:0] b6I;\r\n" + 
-				"output [15:0] b7I;\r\n" + 
-				"output [15:0] b8I;\r\n" + 
-				"output [15:0] b9I;\r\n" + 
-				"output [15:0] b10I;\r\n" + 
-				"output [15:0] b11I;\r\n" + 
-				"output [15:0] b12I;\r\n" + 
-				"output [15:0] b13I;\r\n" + 
-				"output [15:0] b14I;\r\n" + 
-				"output [15:0] b15I;\r\n\n");
+				"output [16:0] b0I;\r\n" + 
+				"output [16:0] b1I;\r\n" + 
+				"output [16:0] b2I;\r\n" + 
+				"output [16:0] b3I;\r\n" + 
+				"output [16:0] b4I;\r\n" + 
+				"output [16:0] b5I;\r\n" + 
+				"output [16:0] b6I;\r\n" + 
+				"output [16:0] b7I;\r\n" + 
+				"output [16:0] b8I;\r\n" + 
+				"output [16:0] b9I;\r\n" + 
+				"output [16:0] b10I;\r\n" + 
+				"output [16:0] b11I;\r\n" + 
+				"output [16:0] b12I;\r\n" + 
+				"output [16:0] b13I;\r\n" + 
+				"output [16:0] b14I;\r\n" + 
+				"output [16:0] b15I;\r\n\n");
 		Scanner S = new Scanner(machineCode);
 		int i = 0;
 		for (i = 0;S.hasNextLine()&&i<16; i++) {
 			String lineRead = S.nextLine();
-			p1.println("assign b" + i +"I[15:0] = 16'b"+lineRead+";");
+			p1.println("assign b" + i +"I[16:0] = 17'b"+"0_"+lineRead+";");
 		}
 		for (; i < 16; i++) {
-			p1.println("assign b" + i +"I[15:0] = 16'b0000_00_00_00000000;");
+			p1.println("assign b" + i +"I[16:0] = 17'b0_0000_00_00_00000000;");
 		}
 		p1.println("endmodule");
 		p2.print("module User_Code_High(b0I,b1I,b2I,b3I,b4I,b5I,b6I,b7I,b8I,b9I,b10I,b11I,b12I,b13I,b14I,b15I);\r\n" + 
 				"\r\n" + 
-				"output [15:0] b0I;\r\n" + 
-				"output [15:0] b1I;\r\n" + 
-				"output [15:0] b2I;\r\n" + 
-				"output [15:0] b3I;\r\n" + 
-				"output [15:0] b4I;\r\n" + 
-				"output [15:0] b5I;\r\n" + 
-				"output [15:0] b6I;\r\n" + 
-				"output [15:0] b7I;\r\n" + 
-				"output [15:0] b8I;\r\n" + 
-				"output [15:0] b9I;\r\n" + 
-				"output [15:0] b10I;\r\n" + 
-				"output [15:0] b11I;\r\n" + 
-				"output [15:0] b12I;\r\n" + 
-				"output [15:0] b13I;\r\n" + 
-				"output [15:0] b14I;\r\n" + 
-				"output [15:0] b15I;\r\n\n");
+				"output [16:0] b0I;\r\n" + 
+				"output [16:0] b1I;\r\n" + 
+				"output [16:0] b2I;\r\n" + 
+				"output [16:0] b3I;\r\n" + 
+				"output [16:0] b4I;\r\n" + 
+				"output [16:0] b5I;\r\n" + 
+				"output [16:0] b6I;\r\n" + 
+				"output [16:0] b7I;\r\n" + 
+				"output [16:0] b8I;\r\n" + 
+				"output [16:0] b9I;\r\n" + 
+				"output [16:0] b10I;\r\n" + 
+				"output [16:0] b11I;\r\n" + 
+				"output [16:0] b12I;\r\n" + 
+				"output [16:0] b13I;\r\n" + 
+				"output [16:0] b14I;\r\n" + 
+				"output [16:0] b15I;\r\n\n");
 		for (i = 0;S.hasNextLine()&&i<16; i++) {
 			String lineRead = S.nextLine();
-			p2.println("assign b" + i +"I[15:0] = 16'b"+lineRead+";");
+			p2.println("assign b" + i +"I[16:0] = 17'b"+"0_"+lineRead+";");
 		}
 		for (; i < 16; i++) {
-			p2.println("assign b" + i +"I[15:0] = 16'b0000_00_00_00000000;");
+			p2.println("assign b" + i +"I[16:0] = 17'b0_0000_00_00_00000000;");
 		}
 		p2.println("endmodule");
 		p1.close();
