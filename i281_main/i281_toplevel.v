@@ -24,7 +24,6 @@ module i281_toplevel (
     output [7:0] datamem13,
     output [7:0] datamem14,
     output [7:0] datamem15
-
 );
   //internal wiring
   wire [15:0] instruction;
