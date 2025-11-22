@@ -4,6 +4,8 @@ output_files
 simulation
 UrJTAG
 *.bak
+*.qsf
+*.rpt
 
 # iverilog, gtkwave
 a.out
