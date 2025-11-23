@@ -2,7 +2,6 @@
 OpCode Decoder. Same OpCodes have been followed as the original i281.
 Consists of one 4-16 decoder, two 2-4 decoders and one 1-2 decoder.
 
-There are two opcode inputs, singlecycle and multicycle, depending on input multicycle_flag, one of them is assigned to opcode_in
 opcode_in [7:4] = decoder input
 opcode_in [3:2] = RX
 opcode_in [1:0] = RY
@@ -11,27 +10,15 @@ opcode_out [24:23] = RY
 opcode_out [22:0] = one-hot encoded opcode
 
 Specifications --
-Inputs: multicycle_flag, opcode_in_singlecycle and opcode_in_multicycle (8-bit), dec_en (1-bit)
+Inputs: opcode_in (8-bit), dec_en (1-bit)
 Outputs: opcode_out (27-bit)
 */
 
 module opcodedec (
-    input multicycle_flag,
-    input wire [7:0] opcode_in_singlecycle,
-    input wire [7:0] opcode_in_multicycle,
+    input wire [7:0] opcode_in,
     input wire dec_en,
     output wire [26:0] opcode_out
 );
-
-  reg [7:0] opcode_in;
-
-  always@(*)
-  begin
-    case(multicycle_flag)
-      0: opcode_in = opcode_in_singlecycle;
-      1: opcode_in = opcode_in_multicycle;
-    endcase
-  end
 
   wire y1, y12, y15;
 

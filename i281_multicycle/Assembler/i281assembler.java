@@ -15,65 +15,56 @@ public class i281assembler {
 	public static String[] instructionSet =  {"NOOP","INPUTC","INPUTCF","INPUTD","INPUTDF",
 		"MOVE","LOADI","LOADP","ADD","ADDI","SUB","SUBI",
 		"LOAD","LOADF","STORE","STOREF",
-		"SHIFTL","SHIFTR","CMP","JUMP","BRE","BRNE","BRG","BRGE",
-		"GCD","MULT","DIVIDE","MOD","RAND"}; // multicycle
-		//BRZ is an alias of BRE, BRNZ is an alias of BRNE
+		"SHIFTL","SHIFTR","CMP","JUMP","BRE","BRNE","BRG","BRGE"}; //BRZ is an alias of BRE, BRNZ is an alias of BRNE
 	/*
-	   "0_0000_XX_XX_XXXXXXXX",
-	   "0_0001_RR_SS_MADDRESS",
-	   "0_0010_R1_SS_XXXXXXXX",
-	   "0_0011_R1_XX_IMMEDVAL",
+	   "0000_XX_XX_XXXXXXXX",
+	   "0001_RR_SS_MADDRESS",
+	   "0010_R1_SS_XXXXXXXX",
+	   "0011_R1_XX_IMMEDVAL",
 
-	   "0_0100_R1_R2_XXXXXXXX",
-	   "0_0101_R1_XX_IMMEDVAL",
-	   "0_0110_R1_R2_XXXXXXXX",
-	   "0_0111_R1_XX_IMMEDVAL",
+	   "0100_R1_R2_XXXXXXXX",
+	   "0101_R1_XX_IMMEDVAL",
+	   "0110_R1_R2_XXXXXXXX",
+	   "0111_R1_XX_IMMEDVAL",
 
-	   "0_1000_R1_XX_MADDRESS",
-	   "0_1001_R1_R2_MEMOFSET",
-	   "0_1010_R1_XX_MADDRESS",
-	   "0_1011_R1_R2_MEMOFSET",
+	   "1000_R1_XX_MADDRESS",
+	   "1001_R1_R2_MEMOFSET",
+	   "1010_R1_XX_MADDRESS",
+	   "1011_R1_R2_MEMOFSET",
 
-	   "0_1100_R1_XS_OOOFFSET",
-	   "0_1101_R1_R2_XXXXXXXX",
-	   "0_1110_XX_XX_OOOFFSET",
-	   "0_1111_XX_CC_OOOFFSET"*/
+	   "1100_R1_XS_OOOFFSET",
+	   "1101_R1_R2_XXXXXXXX",
+	   "1110_XX_XX_OOOFFSET",
+	   "1111_XX_CC_OOOFFSET"*/
 	public static String[] instructionFormat =
 	{
-		"0_0000_", // NOOP
-		"0_0001_", // INPUTC
-		"0_0001_", // INPUTCF
-		"0_0001_", // INPUTD
-		"0_0001_", // INPUTDF
-		"0_0010_", // MOVE
-		"0_0011_", // LOADI
-		"0_0011_", // LOADP
+		"0000_", // NOOP
+		"0001_", // INPUTC
+		"0001_", // INPUTCF
+		"0001_", // INPUTD
+		"0001_", // INPUTDF
+		"0010_", // MOVE
+		"0011_", // LOADI
+		"0011_", // LOADP
 
-		"0_0100_", // ADD
-		"0_0101_", // ADDI
-		"0_0110_", // SUB
-		"0_0111_", // SUBI
+		"0100_", // ADD
+		"0101_", // ADDI
+		"0110_", // SUB
+		"0111_", // SUBI
 
-		"0_1000_", // LOAD
-		"0_1001_", // LOADF
-		"0_1010_", // STORE
-		"0_1011_", // STOREF
+		"1000_", // LOAD
+		"1001_", // LOADF
+		"1010_", // STORE
+		"1011_", // STOREF
 
-		"0_1100_", // SHIFTL
-		"0_1100_", // SHIFTR
-		"0_1101_", // CMP
-		"0_1110_", // JUMP
-		"0_1111_", // BRE_BRZ
-		"0_1111_", // BRNE_BRNZ
-		"0_1111_", // BRG
-		"0_1111_",  // BRGE
-
-		//Multicycle
-		"1_0001_",  // GCD
-		"1_0010_",  // MULT
-		"1_0011_",  // DIVIDE
-		"1_0100_",  // MOD
-		"1_0101_"  // RAND
+		"1100_", // SHIFTL
+		"1100_", // SHIFTR
+		"1101_", // CMP
+		"1110_", // JUMP
+		"1111_", // BRE_BRZ
+		"1111_", // BRNE_BRNZ
+		"1111_", // BRG
+		"1111_"  // BRGE
 	};
 	public static int dataLocation = 0;
 	public static String registers = "ABCD";
@@ -195,26 +186,6 @@ public class i281assembler {
 					getOpcodeBits("SHIFTR");
 					parseSHIFTR(lineScanner);
 				}
-				else if(opcode.equals("GCD")) {
-					getOpcodeBits("GCD");
-					parseGCD(lineScanner);
-				}
-				else if(opcode.equals("MULT")) {
-					getOpcodeBits("MULT");
-					parseMULT(lineScanner);
-				}
-				else if(opcode.equals("DIVIDE")) {
-					getOpcodeBits("DIVIDE");
-					parseDIVIDE(lineScanner);
-				}
-				else if(opcode.equals("MOD")) {
-					getOpcodeBits("MOD");
-					parseMOD(lineScanner);
-				}
-				else if(opcode.equals("RAND")) {
-					getOpcodeBits("RAND");
-					parseRAND(lineScanner);
-				}
 				else {
 					errorMessage("Invalid opcode: " + opcode +" ");
 				}
@@ -263,8 +234,8 @@ public class i281assembler {
 					errorMessage("Expecting numerical value, instead received" + innerString);
 			}
 		}
-		if(variableNames.size()>17) {
-			System.out.println("YOU HAVE MORE THAN 17 BYTES IN YOUR DATA SEGMENT!");
+		if(variableNames.size()>16) {
+			System.out.println("YOU HAVE MORE THAN 16 BYTES IN YOUR DATA SEGMENT!");
 			System.out.println("No output generated.");
 			System.exit(1);
 		}
@@ -869,57 +840,6 @@ public class i281assembler {
 			parseDataSegment(asmScanner);
 		}
 	}
-
-	//Parse multicycle
-	/*
-	0001 c4c5c6c7 : GCD of (c4,c5 select) and (c6,c7 select)
-	0010 c4c5c6c7 : Multiply of (c4,c5 select) and (c6,c7 select)
-	0011 c4c5c6c7 : Divide of (c4,c5 select) and (c6,c7 select)
-	0100 c4c5c6c7 : Modulus of (c4,c5 select) and (c6,c7 select)
-	0101 abcd : Random Number generate < abcd 
-	*/
-
-	public static void parseGCD(Scanner asmScanner){
-		machineCode += getRegisterName(asmScanner.next());
-		getComma(asmScanner.next());
-		machineCode += getRegisterName(asmScanner.next());
-		machineCode += "00000000";
-		machineCode += "\n";
-	}
-
-	public static void parseMULT(Scanner asmScanner){
-		machineCode += getRegisterName(asmScanner.next());
-		getComma(asmScanner.next());
-		machineCode += getRegisterName(asmScanner.next());
-		machineCode += "00000000";
-		machineCode += "\n";
-	}
-
-	public static void parseDIVIDE(Scanner asmScanner){
-		machineCode += getRegisterName(asmScanner.next());
-		getComma(asmScanner.next());
-		machineCode += getRegisterName(asmScanner.next());
-		machineCode += "00000000";
-		machineCode += "\n";
-	}
-
-	public static void parseMOD(Scanner asmScanner){
-		machineCode += getRegisterName(asmScanner.next());
-		getComma(asmScanner.next());
-		machineCode += getRegisterName(asmScanner.next());
-		machineCode += "00000000";
-		machineCode += "\n";
-	}
-
-	public static void parseRAND(Scanner asmScanner){
-		machineCode += "00";
-		getComma(asmScanner.next());
-		machineCode += "00";
-		machineCode += "00000000";
-		machineCode += "\n";
-	}
-
-
 /*
  * All lines after .code should start with a jump label (EX:) or opcode.
  * This method creates jump labels while simultaneously checking for incorrect tokens.
@@ -1025,56 +945,56 @@ public class i281assembler {
 		PrintWriter p2 = new PrintWriter(FF);
 		p1.print("module User_Code_Low(b0I,b1I,b2I,b3I,b4I,b5I,b6I,b7I,b8I,b9I,b10I,b11I,b12I,b13I,b14I,b15I);\r\n" + 
 				"\r\n" + 
-				"output [16:0] b0I;\r\n" + 
-				"output [16:0] b1I;\r\n" + 
-				"output [16:0] b2I;\r\n" + 
-				"output [16:0] b3I;\r\n" + 
-				"output [16:0] b4I;\r\n" + 
-				"output [16:0] b5I;\r\n" + 
-				"output [16:0] b6I;\r\n" + 
-				"output [16:0] b7I;\r\n" + 
-				"output [16:0] b8I;\r\n" + 
-				"output [16:0] b9I;\r\n" + 
-				"output [16:0] b10I;\r\n" + 
-				"output [16:0] b11I;\r\n" + 
-				"output [16:0] b12I;\r\n" + 
-				"output [16:0] b13I;\r\n" + 
-				"output [16:0] b14I;\r\n" + 
-				"output [16:0] b15I;\r\n\n");
+				"output [15:0] b0I;\r\n" + 
+				"output [15:0] b1I;\r\n" + 
+				"output [15:0] b2I;\r\n" + 
+				"output [15:0] b3I;\r\n" + 
+				"output [15:0] b4I;\r\n" + 
+				"output [15:0] b5I;\r\n" + 
+				"output [15:0] b6I;\r\n" + 
+				"output [15:0] b7I;\r\n" + 
+				"output [15:0] b8I;\r\n" + 
+				"output [15:0] b9I;\r\n" + 
+				"output [15:0] b10I;\r\n" + 
+				"output [15:0] b11I;\r\n" + 
+				"output [15:0] b12I;\r\n" + 
+				"output [15:0] b13I;\r\n" + 
+				"output [15:0] b14I;\r\n" + 
+				"output [15:0] b15I;\r\n\n");
 		Scanner S = new Scanner(machineCode);
 		int i = 0;
 		for (i = 0;S.hasNextLine()&&i<16; i++) {
 			String lineRead = S.nextLine();
-			p1.println("assign b" + i +"I[16:0] = 17'b"+lineRead+";");
+			p1.println("assign b" + i +"I[15:0] = 16'b"+lineRead+";");
 		}
 		for (; i < 16; i++) {
-			p1.println("assign b" + i +"I[16:0] = 17'b0_0000_00_00_00000000;");
+			p1.println("assign b" + i +"I[15:0] = 16'b0000_00_00_00000000;");
 		}
 		p1.println("endmodule");
 		p2.print("module User_Code_High(b0I,b1I,b2I,b3I,b4I,b5I,b6I,b7I,b8I,b9I,b10I,b11I,b12I,b13I,b14I,b15I);\r\n" + 
 				"\r\n" + 
-				"output [16:0] b0I;\r\n" + 
-				"output [16:0] b1I;\r\n" + 
-				"output [16:0] b2I;\r\n" + 
-				"output [16:0] b3I;\r\n" + 
-				"output [16:0] b4I;\r\n" + 
-				"output [16:0] b5I;\r\n" + 
-				"output [16:0] b6I;\r\n" + 
-				"output [16:0] b7I;\r\n" + 
-				"output [16:0] b8I;\r\n" + 
-				"output [16:0] b9I;\r\n" + 
-				"output [16:0] b10I;\r\n" + 
-				"output [16:0] b11I;\r\n" + 
-				"output [16:0] b12I;\r\n" + 
-				"output [16:0] b13I;\r\n" + 
-				"output [16:0] b14I;\r\n" + 
-				"output [16:0] b15I;\r\n\n");
+				"output [15:0] b0I;\r\n" + 
+				"output [15:0] b1I;\r\n" + 
+				"output [15:0] b2I;\r\n" + 
+				"output [15:0] b3I;\r\n" + 
+				"output [15:0] b4I;\r\n" + 
+				"output [15:0] b5I;\r\n" + 
+				"output [15:0] b6I;\r\n" + 
+				"output [15:0] b7I;\r\n" + 
+				"output [15:0] b8I;\r\n" + 
+				"output [15:0] b9I;\r\n" + 
+				"output [15:0] b10I;\r\n" + 
+				"output [15:0] b11I;\r\n" + 
+				"output [15:0] b12I;\r\n" + 
+				"output [15:0] b13I;\r\n" + 
+				"output [15:0] b14I;\r\n" + 
+				"output [15:0] b15I;\r\n\n");
 		for (i = 0;S.hasNextLine()&&i<16; i++) {
 			String lineRead = S.nextLine();
-			p2.println("assign b" + i +"I[16:0] = 17'b"+lineRead+";");
+			p2.println("assign b" + i +"I[15:0] = 16'b"+lineRead+";");
 		}
 		for (; i < 16; i++) {
-			p2.println("assign b" + i +"I[16:0] = 17'b0_0000_00_00_00000000;");
+			p2.println("assign b" + i +"I[15:0] = 16'b0000_00_00_00000000;");
 		}
 		p2.println("endmodule");
 		p1.close();
