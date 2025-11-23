@@ -32,7 +32,8 @@ module controlfsm (
   WbLOAD = 5'd9,
   ExLOAD = 5'd10,
   ExLOADI = 5'd11,
-  ExLIR = 5'd12;
+  ExLIR = 5'd12,
+  ExMOVE = 5'd13;
 
   reg [4:0] instruction;
 
@@ -88,7 +89,7 @@ module controlfsm (
       {
         ID, 5'd5
       } : begin
-        next_state = ExALU;
+        next_state = ExMOVE;
       end
       {
         ExALU, 5'd5
@@ -354,6 +355,14 @@ module controlfsm (
           c[24] <= 1'b1;
           c[22] <= 1'b1;
           c[14] <= 1'b1;
+        end
+        ExMOVE: begin
+          c[14] <= 1'b1;
+          c[22] <= 1'b1;
+          c[20] <= 1'b1;
+          c[19] <= 1'b1;
+          c[24] <= 1'b1;
+          c[12] <= 1'b1;
         end
         ExJUMP: begin
           c[2] <= 1'b1;
