@@ -13,6 +13,11 @@ The ALU circuit is:
 
 Since there are 2 input select lines there are 4 total selection cases. We implement this through a case statement. At each case we have a different operation implemented and the carry, overflow, zero and negative flag values are calculated accordingly. 
 
+00: left shift
+01: right shift
+10: add
+11: subtract
+
 The flags register has the following interpretation:
 `3`: carry
 `2`: overflow
