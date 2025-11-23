@@ -33,7 +33,8 @@ module controlfsm (
   ExLOAD = 5'd10,
   ExLOADI = 5'd11,
   ExLIR = 5'd12,
-  ExMOVE = 5'd13;
+  ExMOVE = 5'd13,
+  ExSWAPREG = 5'd14;
 
   reg [4:0] instruction;
 
@@ -75,7 +76,7 @@ module controlfsm (
       state, instruction
     })
       {
-        IF, zzzzz  //instruction is reg[4:0], any instruction has next ID
+        IF, 5'bzzzzz  //instruction is reg[4:0], any instruction has next ID
       } : begin
         next_state = ID;
       end
@@ -121,7 +122,7 @@ module controlfsm (
       {
         ID, 5'd7
       } : begin
-        next_state = exALU;
+        next_state = ExALU;
       end
       {
         ExALU, 5'd7
@@ -153,7 +154,7 @@ module controlfsm (
       {
         ID, 5'd9
       } : begin
-        next_state = exALU;
+        next_state = ExALU;
       end
       {
         ExALU, 5'd9
@@ -356,16 +357,16 @@ module controlfsm (
           c[7]  <= opcode_in[23];
         end
         ExALU: begin
-          c[12] <= |{op_in[17], op_in[14], op_in[12], op_in[10:7], op_in[5:4], op_in[2]};
-          c[13] <= |{op_in[17:16], op_in[10:9]};
+          c[12] <= |{opcode_in[17], opcode_in[14], opcode_in[12], opcode_in[10:7], opcode_in[5:4], opcode_in[2]};
+          c[13] <= |{opcode_in[17:16], opcode_in[10:9]};
           c[14] <= 1'b1;
           c[24] <= 1'b1;
           c[21] <= 1'b1;
           c[22] <= 1'b1;
         end
         ExADDR: begin
-          c[12] <= |{op_in[17], op_in[14], op_in[12], op_in[10:7], op_in[5:4], op_in[2]};
-          c[13] <= |{op_in[17:16], op_in[10:9]};
+          c[12] <= |{opcode_in[17], opcode_in[14], opcode_in[12], opcode_in[10:7], opcode_in[5:4], opcode_in[2]};
+          c[13] <= |{opcode_in[17:16], opcode_in[10:9]};
           c[24] <= 1'b1;
           c[22] <= 1'b1;
           c[14] <= 1'b1;
@@ -390,7 +391,7 @@ module controlfsm (
           c[3] <= 1'b1;
         end
         ExLIR: begin
-          c11[1] <= 1'b1;
+          c[11] <= 1'b1;
         end
         ExSWAPREG: begin
           c[6]  <= opcode_in[26];

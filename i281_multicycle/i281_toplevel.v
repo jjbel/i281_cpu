@@ -114,7 +114,7 @@ module i281_toplevel (
       alu_result
   );
 
-  alu ALU_OUT_REG (
+  aluoutreg ALU_OUT_REG (
       clock,
       reset,
       run,
