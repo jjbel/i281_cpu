@@ -6,9 +6,9 @@ Specifications:
 */
 
 module pc (
+    input run,
     input clock,
     input reset,
-    input run,
     input c3,
     input [5:0] pc_input,
     output reg [5:0] pc_reg
@@ -18,8 +18,10 @@ module pc (
     if (reset) begin
       pc_reg <= 6'b100000;
     end else begin
-      if (run && c3) begin
-        pc_reg <= pc_input;
+      if (run) begin
+        if (c3) begin
+          pc_reg <= pc_input;
+        end
       end
     end
   end
