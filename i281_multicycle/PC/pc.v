@@ -17,7 +17,7 @@ module pc (
 
   always @(posedge clock or posedge reset) begin
     if (reset) begin
-      pc <= 5'b0;
+      pc <= 6'b100000;
     end else if (c3) begin
       pc <= pc_new;
     end

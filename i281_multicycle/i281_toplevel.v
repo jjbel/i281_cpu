@@ -2,6 +2,7 @@
 i281 Top Level Entity
 */
 
+
 //module includes
 module i281_toplevel (
     input run,
@@ -90,7 +91,7 @@ module i281_toplevel (
       ctrl_out[24],
       {2'b00, pc},
       leftinputreg_register,
-      8'b11111111,
+      8'b00000001,
       8'b00000000,
       alu_in_one
   );
@@ -100,7 +101,7 @@ module i281_toplevel (
       ctrl_out[21],
       imem_register[7:0],
       rightinputreg_register,
-      8'b11111111,
+      8'b00000001,
       8'b00000000,
       alu_in_two
   );
@@ -217,12 +218,12 @@ module i281_toplevel (
   );
 
   pc PROGRAM_COUNTER (
-      clock,
-      reset,
-      run,
-      ctrl_out[3],
-      pc_new,
-      pc
+      .clock(clock),
+      .reset(reset),
+      .run(run),
+      .c3(ctrl_out[3]),
+      .pc_new(pc_new),
+      .pc(pc)
   );
 endmodule
 

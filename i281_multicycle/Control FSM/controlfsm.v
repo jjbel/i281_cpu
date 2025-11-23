@@ -336,95 +336,99 @@ module controlfsm (
       state <= IF;
     end else begin
       state <= next_state;
-      c <= 23'b0;
-      case (state)
-        IF: begin
-          c[3]  <= 1'b1;
-          c[12] <= 1'b1;
-          c[16] <= 1'b1;
-          c[20] <= 1'b1;
-          c[22] <= 1'b1;
-        end
-        ID: begin
-          c[3]  <= 1'b1;
-          c[11] <= 1'b1;
-          c[12] <= 1'b1;
-          c[15] <= 1'b1;
-          c[22] <= 1'b1;
-          c[4]  <= opcode_in[26];
-          c[5]  <= opcode_in[25];
-          c[6]  <= opcode_in[24];
-          c[7]  <= opcode_in[23];
-        end
-        ExALU: begin
-          c[12] <= |{opcode_in[17], opcode_in[14], opcode_in[12], opcode_in[10:7], opcode_in[5:4], opcode_in[2]};
-          c[13] <= |{opcode_in[17:16], opcode_in[10:9]};
-          c[14] <= 1'b1;
-          c[24] <= 1'b1;
-          c[21] <= 1'b1;
-          c[22] <= 1'b1;
-        end
-        ExADDR: begin
-          c[12] <= |{opcode_in[17], opcode_in[14], opcode_in[12], opcode_in[10:7], opcode_in[5:4], opcode_in[2]};
-          c[13] <= |{opcode_in[17:16], opcode_in[10:9]};
-          c[24] <= 1'b1;
-          c[22] <= 1'b1;
-          c[14] <= 1'b1;
-        end
-        ExLOAD: begin
-          c[12] <= 1'b1;
-          c[19] <= 1'b1;
-          c[24] <= 1'b1;
-          c[22] <= 1'b1;
-          c[14] <= 1'b1;
-        end
-        ExMOVE: begin
-          c[14] <= 1'b1;
-          c[22] <= 1'b1;
-          c[20] <= 1'b1;
-          c[19] <= 1'b1;
-          c[24] <= 1'b1;
-          c[12] <= 1'b1;
-        end
-        ExJUMP: begin
-          c[2] <= 1'b1;
-          c[3] <= 1'b1;
-        end
-        ExLIR: begin
-          c[11] <= 1'b1;
-        end
-        ExSWAPREG: begin
-          c[6]  <= opcode_in[26];
-          c[7]  <= opcode_in[25];
-          c[4]  <= opcode_in[24];
-          c[5]  <= opcode_in[23];
-          c[11] <= 1'b1;
-          c[15] <= 1'b1;
-        end
-        ExLOADI: begin
-          c[19] <= 1'b1;
-          c[12] <= 1'b1;
-          c[22] <= 1'b1;
-        end
-        MemREAD: begin
-          c[23] <= 1'b1;
-        end
-        MemWRITE: begin
-          c[17] <= 1'b1;
-        end
-        WbALU: begin
-          c[10] <= 1'b1;
-          c[8]  <= opcode_in[26];
-          c[9]  <= opcode_in[25];
-        end
-        WbLOAD: begin
-          c[18] <= 1'b1;
-          c[10] <= 1'b1;
-          c[8]  <= opcode_in[26];
-          c[9]  <= opcode_in[25];
-        end
-      endcase
     end
   end
+
+  always @(*) begin
+    c = 23'b0;
+    case (state)
+      IF: begin
+        c[3]  = 1'b1;
+        c[12] = 1'b1;
+        c[16] = 1'b1;
+        c[20] = 1'b1;
+        c[22] = 1'b1;
+      end
+      ID: begin
+        c[3]  = 1'b1;
+        c[11] = 1'b1;
+        c[12] = 1'b1;
+        c[15] = 1'b1;
+        c[22] = 1'b1;
+        c[4]  = opcode_in[26];
+        c[5]  = opcode_in[25];
+        c[6]  = opcode_in[24];
+        c[7]  = opcode_in[23];
+      end
+      ExALU: begin
+        c[12] = |{opcode_in[17], opcode_in[14], opcode_in[12], opcode_in[10:7], opcode_in[5:4], opcode_in[2]};
+        c[13] = |{opcode_in[17:16], opcode_in[10:9]};
+        c[14] = 1'b1;
+        c[24] = 1'b1;
+        c[21] = 1'b1;
+        c[22] = 1'b1;
+      end
+      ExADDR: begin
+        c[12] = |{opcode_in[17], opcode_in[14], opcode_in[12], opcode_in[10:7], opcode_in[5:4], opcode_in[2]};
+        c[13] = |{opcode_in[17:16], opcode_in[10:9]};
+        c[24] = 1'b1;
+        c[22] = 1'b1;
+        c[14] = 1'b1;
+      end
+      ExLOAD: begin
+        c[12] = 1'b1;
+        c[19] = 1'b1;
+        c[24] = 1'b1;
+        c[22] = 1'b1;
+        c[14] = 1'b1;
+      end
+      ExMOVE: begin
+        c[14] = 1'b1;
+        c[22] = 1'b1;
+        c[20] = 1'b1;
+        c[19] = 1'b1;
+        c[24] = 1'b1;
+        c[12] = 1'b1;
+      end
+      ExJUMP: begin
+        c[2] = 1'b1;
+        c[3] = 1'b1;
+      end
+      ExLIR: begin
+        c[11] = 1'b1;
+      end
+      ExSWAPREG: begin
+        c[6]  = opcode_in[26];
+        c[7]  = opcode_in[25];
+        c[4]  = opcode_in[24];
+        c[5]  = opcode_in[23];
+        c[11] = 1'b1;
+        c[15] = 1'b1;
+      end
+      ExLOADI: begin
+        c[19] = 1'b1;
+        c[12] = 1'b1;
+        c[22] = 1'b1;
+      end
+      MemREAD: begin
+        c[23] = 1'b1;
+      end
+      MemWRITE: begin
+        c[17] = 1'b1;
+      end
+      WbALU: begin
+        c[10] = 1'b1;
+        c[8]  = opcode_in[26];
+        c[9]  = opcode_in[25];
+      end
+      WbLOAD: begin
+        c[18] = 1'b1;
+        c[10] = 1'b1;
+        c[8]  = opcode_in[26];
+        c[9]  = opcode_in[25];
+      end
+    endcase
+  end
+
 
 endmodule
