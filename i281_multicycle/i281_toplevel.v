@@ -189,7 +189,7 @@ module i281_toplevel (
       reset,
       ctrl_out[17],
       alu_out_register[3:0],
-      leftinputreg_register,
+      rightinputreg_register,
       alu_out_register[3:0],
       data_memory_out,
       datamem0,
