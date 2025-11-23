@@ -1,0 +1,171 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper,left=2.5cm, right=2.5cm, top = 1.5cm, bottom = 2.5cm]{geometry}
+
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{caption}
+% \captionsetup{justification=centering}
+% \usepackage{subcaption}
+\usepackage{hyperref} % for href
+\usepackage{graphicx}
+\usepackage{float}
+% \usepackage{ragged2e} % for flushleft
+
+\usepackage[table]{xcolor} % Required for \cellcolor
+
+\setlength{\parindent}{0pt} % don't paragraphs by default
+
+\title{\textbf{i281 CPU} \\
+A Course Project for EE224 Digital Systems}
+
+\author{
+  Team Name: \textbf{googoogaga} \\
+  Team Members: \\
+  Visharad Srivastava (24B1202) \\
+  Shridhar Patil (24B1261) \\
+  Jai Bellare (24B1307)
+}
+
+\date{Submission Date: \textbf{23 November, 2025}}
+
+\begin{document}
+
+\maketitle
+
+\vspace{2cm}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{01_quartus_netlist.png}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{02_bubble_sort_waveform.png}
+\end{figure}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+
+In this report, we present our design, Verilog implementation, and simulation of the i281, an 8-bit CPU. This CPU was made for the course project of EE224 Digital Systems at IIT Bombay, instructed by Prof. Sachin Patkar.
+We follow the work of \href{https://www.ece.iastate.edu/~alexs/classes/2024_Fall_2810/}{Prof. Alexander Stoytchev} and his group at Iowa State University.
+
+Find the Verilog code, waveforms and documentation at \url{https://github.com/jjbel/i281_cpu}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{01_quartus_netlist.png}
+  \caption{Netlist of the CPU}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{02_bubble_sort_waveform.png}
+  \caption{Bubble Sort Waveform}
+\end{figure}
+
+Below we explain the architecture and design choices, followed by a demo of running the bubble sort algorithm.
+
+\section{Architecture}
+
+\subsection{Overview}
+
+The CPU is of the Harvard-style architecture, with separate cod (64x 16-bit) and data (16x 8-bit) memories.
+
+The CPU is single-cycle, with a purely combinational control logic block. There are 26 assembly instructions, which map to 23 Opcodes. The control logic block converts the decoded opcode to 18 control signals c1 to c18.
+
+The ALU supports addition, subtraction, left and right bitshifts. It operates on 4x 6-bit registers A,B,C,D.
+
+\pagebreak
+
+\begin{center}
+  \includegraphics[width=\textwidth]{03_architecture_block_diagram.png}
+\end{center}
+
+Drawing conventions: inputs enter from the left, outputs exit from the right, control lines are vertical arrows on the top.
+
+\subsection{Memories}
+
+\begin{enumerate}
+  \item \textbf{Code Memory} : 64 rows of 16-bit registers, hence a 6-bit Program Counter (PC)
+  \item \textbf{Data Memory} : 16 rows of 8-bit registers
+\end{enumerate}
+
+The 6-bit program counter specifies the current instruction.
+
+\pagebreak
+
+\subsection{Instructions and Opcode Decoder}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{04_instructions.png}
+  \caption{Assembly Instructions}
+\end{figure}
+
+There are 26 assembly instructions, which map to 23 Opcodes. LOADI/LOADP, BRE/BRZ and BRNE/BRNZ are aliased.
+
+The decoder produces 27 outputs: a 23-bit one-hot opcode, and 4 outputs to select registers A,B,C or D.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{../i281_main/OpCode Decoder/images/decoder_netlist.png}
+  \caption{Opcode Decoder Diagram}
+\end{figure}
+
+Each 16-bit register of the code memory encodes an instruction:
+\begin{enumerate}
+  \item instr[15:12] majorly chooses the instruction, using a 4-to-16 decoder which produces a one-hot output
+  \item instr[11:10] further choose which register A,B,C or D to use for the first operand
+  \item instr[9:8] either choose which register to use for the second operand, or which of (INPUTC, INPUTCF, INPUTD, INPUTDF), or of (BRE/BRZ, BRNE/BRNZ, BRG, BRGE)
+  \item instr[8] also decides whether to shift left or right
+  \item The lower byte instr[7:0] is NOT routed through the decoder. It is either an 8-bit immediate value, or a 6-bit address for data memory or branching
+\end{enumerate}
+
+Immediate values allow using compile-time constants for loading into registers, or for arithmetic operations.
+
+Jumps specify a fixed 6-bit relative-jump to unconditionally move the program counter by. Branches allow conditionally jumping based on comparisons from the flags output of the ALU. Jumps and branches are necessary for control flow like if/else statements and loops.
+
+\subsection{Control Logic}
+
+Since the CPU is single-cycle, the control logic block is purely combinational. The control logic block maps the 27-bit opcode decoder output to 18 control signals c1 to c18.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{05_control_signal_output_table.png}
+  \caption{Control Signal Output Table}
+\end{figure}
+
+The Control Signal Output Table specifies what outputs (C1 to c18) a given decoded opcode produces.
+For example, the ADD instruction:
+\begin{enumerate}
+  \item specifies the operands in $c_4c_5$ and $c_6c_7$
+  \item sets $c_{10}$ to route the ALU output to the destination register
+  \item and chooses the ALU's addition operation in $c_{11}c_{12}$
+\end{enumerate}
+
+% TODO could describe each control signal here
+
+\subsection{ALU and Registers}
+
+The ALU supports 4 operations:
+\begin{enumerate}
+  \item left shift (SHIFTL)
+  \item right shift (SHIFTR)
+  \item add (ADD)
+  \item subtract (SUB)
+\end{enumerate}
+
+The ALU operates on 4x 8-bit registers: A,B,C,D.
+
+\section{Verilog implementation}
+
+We implemented each block in a separate Verilog module. For example the folder \texttt{i281\_main/Control Logic} contains the control logic in \texttt{controllogic.v}, its testbench in \texttt{controllogic\_tb.v}.
+
+\end{document}
