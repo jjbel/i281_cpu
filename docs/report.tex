@@ -1,0 +1,59 @@
+\documentclass[10pt]{article}
+
+\usepackage[a4paper]{geometry}
+
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{caption}
+% \captionsetup{justification=centering}
+% \usepackage{subcaption}
+\usepackage{hyperref} % for href
+\usepackage{graphicx}
+\usepackage{float}
+% \usepackage{ragged2e} % for flushleft
+
+\usepackage[table]{xcolor} % Required for \cellcolor
+
+\title{\textbf{i281 CPU} \\
+A Course Project for EE224 Digital Systems}
+
+\author{
+  Team Name: \textbf{googoogaga} \\
+  Team Members: \\
+  Visharad Srivastava (24B1202) \\
+  Shridhar Patil (24B1261) \\
+  Jai Bellare (24B1307)
+}
+
+\date{Submission Date: \textbf{23 November, 2025}}
+
+\begin{document}
+
+\maketitle
+
+\vspace{2cm}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+
+In this report, we present our design, Verilog implementation, and simulation of the i281, an 8-bit CPU. This CPU was made for the course project of EE224 Digital Systems at IIT Bombay, instructed by Prof. Sachin Patkar.
+We follow the work of \href{https://www.ece.iastate.edu/~alexs/classes/2024_Fall_2810/}{Prof. Alexander Stoytchev} and his group at Iowa State University.
+
+\section{Architecture}
+
+\begin{center}
+  \includegraphics[width=\textwidth]{01_architecture_block_diagram.png}
+\end{center}
+
+The CPU is of the Harvard-style architecture, with separate code and data memories:
+\begin{enumerate}
+  \item \textbf{Code Memory} : 64 rows of 16-bit registers
+  \item \textbf{Data Memory} : 16 rows of 8-bit registers
+\end{enumerate}
+
+\end{document}

@@ -13,3 +13,6 @@ a.out
 # assembler
 *.class
 *.bin
+
+# latex
+build
