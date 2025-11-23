@@ -2,6 +2,7 @@
 i281 Top Level Entity
 */
 
+
 //module includes
 module i281_toplevel (
     input run,
@@ -28,7 +29,7 @@ module i281_toplevel (
   wire [15:0] instruction;
   wire [15:0] imem_register;
 
-  wire [23:1] ctrl_out;
+  wire [24:1] ctrl_out;
   wire [26:0] op_in;
   wire [ 3:0] flag_in;
 
@@ -85,10 +86,13 @@ module i281_toplevel (
       ctrl_out
   );
 
-  mux_n #(8) PC_REG_TO_ALU_MUX (
+  mux_n_4 #(8) PC_REG_TO_ALU_MUX (
       ctrl_out[19],
+      ctrl_out[24],
       {2'b00, pc},
       leftinputreg_register,
+      8'b00000001,
+      8'b00000000,
       alu_in_one
   );
 
@@ -97,7 +101,7 @@ module i281_toplevel (
       ctrl_out[21],
       imem_register[7:0],
       rightinputreg_register,
-      8'b11111111,
+      8'b00000001,
       8'b00000000,
       alu_in_two
   );
@@ -111,7 +115,7 @@ module i281_toplevel (
       alu_result
   );
 
-  alu ALU_OUT_REG (
+  aluoutreg ALU_OUT_REG (
       clock,
       reset,
       run,
@@ -185,7 +189,7 @@ module i281_toplevel (
       reset,
       ctrl_out[17],
       alu_out_register[3:0],
-      rightinputreg_register,
+      leftinputreg_register,
       alu_out_register[3:0],
       data_memory_out,
       datamem0,
@@ -214,12 +218,12 @@ module i281_toplevel (
   );
 
   pc PROGRAM_COUNTER (
-      clock,
-      reset,
-      run,
-      ctrl_out[3],
-      pc_new,
-      pc
+      .clock(clock),
+      .reset(reset),
+      .run(run),
+      .c3(ctrl_out[3]),
+      .pc_new(pc_new),
+      .pc(pc)
   );
 endmodule
 
