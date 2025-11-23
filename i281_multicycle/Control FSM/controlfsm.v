@@ -306,6 +306,27 @@ module controlfsm (
       } : begin
         next_state = IF;
       end
+      //STOREF
+      {
+        ID, 5'd14
+      } : begin
+        next_state = ExSWAPREG;
+      end
+      {
+        ExSWAPREG, 5'd14
+      } : begin
+        next_state = ExLOADI;
+      end
+      {
+        ExLOADI, 5'd14
+      } : begin
+        next_state = MemWRITE;
+      end
+      {
+        MemWRITE, 5'd14
+      } : begin
+        next_state = IF;
+      end
     endcase
   end
 
@@ -370,6 +391,14 @@ module controlfsm (
         end
         ExLIR: begin
           c11[1] <= 1'b1;
+        end
+        ExSWAPREG: begin
+          c[6]  <= opcode_in[26];
+          c[7]  <= opcode_in[25];
+          c[4]  <= opcode_in[24];
+          c[5]  <= opcode_in[23];
+          c[11] <= 1'b1;
+          c[15] <= 1'b1;
         end
         ExLOADI: begin
           c[19] <= 1'b1;
