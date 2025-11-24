@@ -1,4 +1,6 @@
-# Digital Systems Course Project: i281 CPU
+# i281 CPU
+
+### Read the full report here: [report.pdf](report.pdf)
 
 Group Members: Shridhar Patil, Jai Bellare, Visharad Srivastava
 
