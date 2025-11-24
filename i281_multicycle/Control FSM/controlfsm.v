@@ -36,7 +36,8 @@ module controlfsm (
   ExLIR = 5'd12,
   ExMOVE = 5'd13,
   ExSWAPREG = 5'd14,
-  WbPC = 5'd15;
+  WbPC = 5'd15,
+  ExAMEMADD = 5'd16;
 
 
   localparam NOOP=5'd0,
@@ -170,10 +171,10 @@ module controlfsm (
       {
         ID, ADDI
       } : begin
-        next_state = ExADDR;
+        next_state = ExAMEMADD;
       end
       {
-        ExADDR, ADDI
+        ExAMEMADD, ADDI
       } : begin
         next_state = WbALU;
       end
@@ -316,10 +317,10 @@ module controlfsm (
       {
         ID, LOADF
       } : begin
-        next_state = ExADDR;
+        next_state = ExAMEMADD;
       end
       {
-        ExADDR, LOADF
+        ExAMEMADD, LOADF
       } : begin
         next_state = MemREAD;
       end
@@ -357,15 +358,10 @@ module controlfsm (
       {
         ID, STOREF
       } : begin
-        next_state = ExSWAPREG;
+        next_state = ExAMEMADD;
       end
       {
-        ExSWAPREG, STOREF
-      } : begin
-        next_state = ExLOADI;
-      end
-      {
-        ExLOADI, STOREF
+        ExAMEMADD, STOREF
       } : begin
         next_state = MemWRITE;
       end
@@ -422,6 +418,12 @@ module controlfsm (
         c[21] = 1'b1;
         c[22] = 1'b1;
       end
+      ExAMEMADD: begin  //adds left reg input to lower 8 bits of IMEM
+        c[12] = 1'b1;
+        c[24] = 1'b1;
+        c[22] = 1'b1;
+        c[14] = |{opcode_in[17:15], opcode_in[10:7]};  // from single cycle
+      end
       ExADDR: begin
         c[12] = |{opcode_in[17], opcode_in[14], opcode_in[12], opcode_in[10:7], opcode_in[5:4], opcode_in[2]};
         c[13] = |{opcode_in[17:16], opcode_in[10:9]};
@@ -430,7 +432,7 @@ module controlfsm (
         c[24] = 1'b1;
         c[22] = 1'b1;
       end
-      ExLOAD: begin  // hmm where is ExLOAD used
+      ExLOAD: begin
         c[12] = 1'b1;
         c[14] = |{opcode_in[17:15], opcode_in[10:7]};  // from single cycle
         c[19] = 1'b1;
@@ -450,11 +452,6 @@ module controlfsm (
         // c[3] = 1'b1;
         c[12] = 1'b1;
       end
-      // ExLIR: begin
-      //   c[4]  = opcode_in[26];
-      //   c[5]  = opcode_in[25];
-      //   c[11] = 1'b1;
-      // end
       ExSWAPREG: begin
         c[6]  = opcode_in[26];
         c[7]  = opcode_in[25];
@@ -481,11 +478,10 @@ module controlfsm (
         c[9]  = opcode_in[25];
       end
       WbLOAD: begin
+        c[18] = 1'b1;
         c[10] = 1'b1;
         c[8]  = opcode_in[26];
         c[9]  = opcode_in[25];
-
-        c[18] = 1'b1;
       end
       WbPC: begin
         c[3] = 1'b1;
