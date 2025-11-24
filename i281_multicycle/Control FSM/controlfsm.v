@@ -30,6 +30,7 @@ module controlfsm (
   MemWRITE = 5'd7,
   WbALU = 5'd8,
   WbLOAD = 5'd9,
+  WbPC = 5'd15,
   ExLOAD = 5'd10,
   ExLOADI = 5'd11,
   ExLIR = 5'd12,
