@@ -72,9 +72,9 @@ module controlfsm (
   always @(*) begin
     case (opcode_in[22:0])
       23'b00000000000000000000001: instruction = 5'd0;  //NOOP
-      23'b00000000000000000000010: instruction = 5'd1;  //INPUTC
-      23'b00000000000000000000100: instruction = 5'd2;  //INPUTCF
-      23'b00000000000000000001000: instruction = 5'd3;  //INPUTD
+      23'b00000000000000000000010: instruction = 5'd4;  //GCD
+      23'b00000000000000000000100: instruction = 5'd4;  //GCD
+      23'b00000000000000000001000: instruction = 5'd4;  //GCD
       23'b00000000000000000010000: instruction = 5'd4;  //GCD
       23'b00000000000000000100000: instruction = 5'd5;  //MOVE .
       23'b00000000000000001000000: instruction = 5'd6;  //LOADI/LOAP
@@ -469,7 +469,6 @@ module controlfsm (
         c[12] = |{opcode_in[17], opcode_in[14], opcode_in[12], opcode_in[10:7], opcode_in[5:4], opcode_in[2]};
         c[13] = |{opcode_in[17:16], opcode_in[10:9]};
         c[14] = |{opcode_in[17:15], opcode_in[10:7]};  // from single cycle
-
         c[24] = 1'b1;
         c[22] = 1'b1;
       end
@@ -480,17 +479,7 @@ module controlfsm (
         c[24] = 1'b1;
         c[22] = 1'b1;
       end
-      // ExMOVE: begin
-      //   c[14] = |{opcode_in[17:15], opcode_in[10:7]};  // from single cycle
-      //   c[12] = 1'b1;
-      //   c[19] = 1'b1;
-      //   c[20] = 1'b1;
-      //   c[22] = 1'b1;
-      //   c[24] = 1'b1;
-      // end
       ExJUMP: begin
-        // c[2] = 1'b1;
-        // c[3] = 1'b1;
         c[12] = 1'b1;
         c[22] = 1'b1;
       end
