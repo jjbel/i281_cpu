@@ -35,7 +35,8 @@ module controlfsm (
   ExLOADI = 5'd11,
   ExLIR = 5'd12,
   ExMOVE = 5'd13,
-  ExSWAPREG = 5'd14;
+  ExSWAPREG = 5'd14,
+  WbPC = 5'd15;
 
 
   localparam NOOP=5'd0,
@@ -118,10 +119,10 @@ module controlfsm (
       {
         ID, MOVE
       } : begin
-        next_state = ExMOVE;
+        next_state = ExADDR;
       end
       {
-        ExMOVE, MOVE  // TODO prev was ExALU?
+        ExADDR, MOVE  // TODO prev was ExALU?
       } : begin
         next_state = WbALU;
       end
@@ -257,7 +258,12 @@ module controlfsm (
         next_state = ExJUMP;
       end
       {
-        ExJUMP, JUMP  // prev was 5'd17 which is CMP
+        ExJUMP, JUMP
+      } : begin
+        next_state = WbPC;
+      end
+      {
+        WbPC, JUMP
       } : begin
         next_state = IF;
       end
@@ -275,8 +281,14 @@ module controlfsm (
       {
         ExJUMP, BRG
       } : begin
+        next_state = WbPC;
+      end
+      {
+        WbPC, BRG
+      } : begin
         next_state = IF;
       end
+
 
       //BRGE
       {
@@ -291,32 +303,23 @@ module controlfsm (
       {
         ExJUMP, BRGE
       } : begin
+        next_state = WbPC;
+      end
+      {
+        WbPC, BRGE
+      } : begin
         next_state = IF;
       end
+
 
       //LOADF
       {
         ID, LOADF
       } : begin
-        next_state = ExLOAD;
+        next_state = ExADDR;
       end
       {
-        ExLOAD, LOADF
-      } : begin
-        next_state = WbALU;
-      end
-      {
-        WbALU, LOADF
-      } : begin
-        next_state = ExLIR;
-      end
-      {
-        ExLIR, LOADF
-      } : begin
-        next_state = ExALU;
-      end
-      {
-        ExALU, LOADF
+        ExADDR, LOADF
       } : begin
         next_state = MemREAD;
       end
@@ -332,6 +335,7 @@ module controlfsm (
       end
 
       //STORE
+      // TODO add this to the table in Google Sheets
       {
         ID, STORE
       } : begin
@@ -349,6 +353,7 @@ module controlfsm (
       end
 
       //STOREF
+      // TODO add this to the table in Google Sheets
       {
         ID, STOREF
       } : begin
@@ -395,7 +400,7 @@ module controlfsm (
         c[11] = 1'b1;
         c[12] = 1'b1;
         c[15] = 1'b1;
-        c[22] = 1'b1;
+        // c[22] = 1'b1; // hmmmmmm. we're not computing pc+1 + branch here, doing that in ExJUMP. WbPC
         if (instruction == 5'd5 | instruction == 5'd12 | instruction == 5'd13 | instruction == 5'd14) begin
           c[4] = opcode_in[24];
           c[5] = opcode_in[23];
@@ -411,7 +416,8 @@ module controlfsm (
       ExALU: begin
         c[12] = |{opcode_in[17], opcode_in[14], opcode_in[12], opcode_in[10:7], opcode_in[5:4], opcode_in[2]};
         c[13] = |{opcode_in[17:16], opcode_in[10:9]};
-        c[14] = 1'b1;
+        c[14] = |{opcode_in[17:15], opcode_in[10:7]};  // from single cycle
+
         c[24] = 1'b1;
         c[21] = 1'b1;
         c[22] = 1'b1;
@@ -419,34 +425,36 @@ module controlfsm (
       ExADDR: begin
         c[12] = |{opcode_in[17], opcode_in[14], opcode_in[12], opcode_in[10:7], opcode_in[5:4], opcode_in[2]};
         c[13] = |{opcode_in[17:16], opcode_in[10:9]};
+        c[14] = |{opcode_in[17:15], opcode_in[10:7]};  // from single cycle
+
         c[24] = 1'b1;
         c[22] = 1'b1;
-        c[14] = 1'b1;
       end
-      ExLOAD: begin
+      ExLOAD: begin  // hmm where is ExLOAD used
         c[12] = 1'b1;
+        c[14] = |{opcode_in[17:15], opcode_in[10:7]};  // from single cycle
         c[19] = 1'b1;
         c[24] = 1'b1;
         c[22] = 1'b1;
-        c[14] = 1'b1;
       end
-      ExMOVE: begin
-        c[14] = 1'b1;
-        c[22] = 1'b1;
-        c[20] = 1'b1;
-        c[19] = 1'b1;
-        c[24] = 1'b1;
-        c[12] = 1'b1;
-      end
+      // ExMOVE: begin
+      //   c[14] = |{opcode_in[17:15], opcode_in[10:7]};  // from single cycle
+      //   c[12] = 1'b1;
+      //   c[19] = 1'b1;
+      //   c[20] = 1'b1;
+      //   c[22] = 1'b1;
+      //   c[24] = 1'b1;
+      // end
       ExJUMP: begin
-        c[2] = 1'b1;
-        c[3] = 1'b1;
+        // c[2] = 1'b1;
+        // c[3] = 1'b1;
+        c[12] = 1'b1;
       end
-      ExLIR: begin
-        c[4]  = opcode_in[26];
-        c[5]  = opcode_in[25];
-        c[11] = 1'b1;
-      end
+      // ExLIR: begin
+      //   c[4]  = opcode_in[26];
+      //   c[5]  = opcode_in[25];
+      //   c[11] = 1'b1;
+      // end
       ExSWAPREG: begin
         c[6]  = opcode_in[26];
         c[7]  = opcode_in[25];
@@ -473,13 +481,15 @@ module controlfsm (
         c[9]  = opcode_in[25];
       end
       WbLOAD: begin
-        c[18] = 1'b1;
         c[10] = 1'b1;
         c[8]  = opcode_in[26];
         c[9]  = opcode_in[25];
+
+        c[18] = 1'b1;
+      end
+      WbPC: begin
+        c[3] = 1'b1;
       end
     endcase
   end
-
-
 endmodule
