@@ -1,5 +1,8 @@
 # i281 Multicycle 
 
+## State Tables and Datapath
+
+
 #### iverilog simulation: 
 
 Run the following commands in the directory `i281_multicycle`:
