@@ -1,5 +1,13 @@
 $date
+<<<<<<< HEAD
 	Mon Nov 24 17:31:54 2025
+=======
+<<<<<<< HEAD
+	Mon Nov 24 16:02:54 2025
+=======
+	Mon Nov 24 16:14:54 2025
+>>>>>>> 5583867429d678b1828a2df3f9b160f06d17adec
+>>>>>>> e7d3a71962575ba5046ae0a996228644f79dc8cb
 $end
 $version
 	Icarus Verilog
