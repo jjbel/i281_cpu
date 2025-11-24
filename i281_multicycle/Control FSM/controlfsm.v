@@ -37,14 +37,17 @@ module controlfsm (
   ExMOVE = 5'd13,
   ExSWAPREG = 5'd14,
   WbPC = 5'd15,
-  ExAMEMADD = 5'd16;
+  ExAMEMADD = 5'd16,
+  ExMEMJUMP = 5'd17,
+  ExCMP = 5'd18,
+  ExSUB = 5'd19;
 
 
   localparam NOOP=5'd0,
     INPUTC=5'd1,
     INPUTCF=5'd2,
     INPUTD=5'd3,
-    INPUTDF=5'd4,
+    GCD=5'd4,
     MOVE=5'd5,
     LOADI_LOAP=5'd6,
     ADD=5'd7,
@@ -72,7 +75,7 @@ module controlfsm (
       23'b00000000000000000000010: instruction = 5'd1;  //INPUTC
       23'b00000000000000000000100: instruction = 5'd2;  //INPUTCF
       23'b00000000000000000001000: instruction = 5'd3;  //INPUTD
-      23'b00000000000000000010000: instruction = 5'd4;  //INPUTDF
+      23'b00000000000000000010000: instruction = 5'd4;  //GCD
       23'b00000000000000000100000: instruction = 5'd5;  //MOVE .
       23'b00000000000000001000000: instruction = 5'd6;  //LOADI/LOAP
       23'b00000000000000010000000: instruction = 5'd7;  //ADD
@@ -370,6 +373,44 @@ module controlfsm (
       } : begin
         next_state = IF;
       end
+
+      //GCD
+      {
+        ID, GCD
+      } : begin
+        next_state = ExCMP;
+      end
+      {
+        ExCMP, GCD
+      } : begin
+        if (flags_reg[0] == 1) begin
+          next_state = ExMEMJUMP;
+        end else if (flags_reg[1] == 1) begin
+          next_state = ExSWAPREG;
+        end else begin
+          next_state = ExSUB;
+        end
+      end
+      {
+        ExMEMJUMP, GCD
+      } : begin
+        next_state = MemWRITE;
+      end
+      {
+        ExSUB, GCD
+      } : begin
+        next_state = ExCMP;
+      end
+      {
+        MemWRITE, GCD
+      } : begin
+        next_state = IF;
+      end
+      {
+        ExSWAPREG, GCD
+      } : begin
+        next_state = ExSUB;
+      end
     endcase
   end
 
@@ -453,6 +494,14 @@ module controlfsm (
         c[12] = 1'b1;
         c[22] = 1'b1;
       end
+      ExCMP: begin
+        c[24] = 1'b1;
+        c[21] = 1'b1;
+        c[12] = 1'b1;
+        c[13] = 1'b1;
+        c[22] = 1'b1;
+        c[14] = 1'b1;
+      end
       ExSWAPREG: begin
         c[6]  = opcode_in[26];
         c[7]  = opcode_in[25];
@@ -487,6 +536,18 @@ module controlfsm (
       WbPC: begin
         c[3] = 1'b1;
       end
+      ExSUB: begin
+        c[10] = 1'b1;
+        c[8]  = opcode_in[26];
+        c[9]  = opcode_in[25];
+      end
+      ExMEMJUMP: begin
+        c[19] = 1'b1;
+        c[24] = 1'b1;
+        c[22] = 1'b1;
+        c[12] = 1'b1;
+      end
+
     endcase
   end
 endmodule
