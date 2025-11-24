@@ -451,6 +451,7 @@ module controlfsm (
         // c[2] = 1'b1;
         // c[3] = 1'b1;
         c[12] = 1'b1;
+        c[22] = 1'b1;
       end
       ExSWAPREG: begin
         c[6]  = opcode_in[26];
