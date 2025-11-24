@@ -20,6 +20,7 @@ module controlfsm (
   // opcode_in[26:25] are RX
   // opcode_in[24:23] are RY
 
+  // TODO why doesn't the formatter format this
   localparam IF = 5'd0,
   ID = 5'd1,
   ExALU = 5'd2,
@@ -35,6 +36,31 @@ module controlfsm (
   ExLIR = 5'd12,
   ExMOVE = 5'd13,
   ExSWAPREG = 5'd14;
+
+
+  localparam NOOP=5'd0,
+    INPUTC=5'd1,
+    INPUTCF=5'd2,
+    INPUTD=5'd3,
+    INPUTDF=5'd4,
+    MOVE=5'd5,
+    LOADI_LOAP=5'd6,
+    ADD=5'd7,
+    ADDI=5'd8,
+    SUB=5'd9,
+    SUBI=5'd10,
+    LOAD=5'd11,
+    LOADF=5'd12,
+    STORE=5'd13,
+    STOREF=5'd14,
+    SHIFTL=5'd15,
+    SHIFTR=5'd16,
+    CMP=5'd17,
+    JUMP=5'd18,
+    BRE_BRZ=5'd19,
+    BRNE_BRNZ=5'd20,
+    BRG=5'd21,
+    BRGE=5'd22;
 
   reg [4:0] instruction;
 
@@ -80,154 +106,165 @@ module controlfsm (
       } : begin
         next_state = ID;
       end
+
       // NOOP OPERATION
       {
-        ID, 5'd0
+        ID, NOOP
       } : begin
         next_state = IF;
       end
-      //MOVE OPERATION
+
+      // MOVE OPERATION
       {
-        ID, 5'd5
+        ID, MOVE
       } : begin
         next_state = ExMOVE;
       end
       {
-        ExALU, 5'd5
+        ExMOVE, MOVE  // TODO prev was ExALU?
       } : begin
         next_state = WbALU;
       end
       {
-        WbALU, 5'd5
+        WbALU, MOVE
       } : begin
         next_state = IF;
       end
+
       //LOADI/LOADP 
       {
-        ID, 5'd6
+        ID, LOADI_LOAP
       } : begin
         next_state = ExLOADI;
       end
       {
-        ExLOADI, 5'd6
+        ExLOADI, LOADI_LOAP
       } : begin
         next_state = WbALU;
       end
       {
-        WbALU, 5'd6
+        WbALU, LOADI_LOAP
       } : begin
         next_state = IF;
       end
+
       //ADD
       {
-        ID, 5'd7
+        ID, ADD
       } : begin
         next_state = ExALU;
       end
       {
-        ExALU, 5'd7
+        ExALU, ADD
       } : begin
         next_state = WbALU;
       end
       {
-        WbALU, 5'd7
+        WbALU, ADD
       } : begin
         next_state = IF;
       end
+
       //ADDI
       {
-        ID, 5'd8
+        ID, ADDI
       } : begin
         next_state = ExADDR;
       end
       {
-        ExADDR, 5'd8
+        ExADDR, ADDI
       } : begin
         next_state = WbALU;
       end
       {
-        WbALU, 5'd8
+        WbALU, ADDI
       } : begin
         next_state = IF;
       end
+
       //SUB
       {
-        ID, 5'd9
+        ID, SUB
       } : begin
         next_state = ExALU;
       end
       {
-        ExALU, 5'd9
+        ExALU, SUB
       } : begin
         next_state = WbALU;
       end
       {
-        WbALU, 5'd9
+        WbALU, SUB
       } : begin
         next_state = IF;
       end
+
       //SUBI
       {
-        ID, 5'd10
+        ID, SUBI
       } : begin
         next_state = ExADDR;
       end
       {
-        ExADDR, 5'd10
+        ExADDR, SUBI
       } : begin
         next_state = WbALU;
       end
       {
-        WbALU, 5'd10
+        WbALU, SUBI
       } : begin
         next_state = IF;
       end
+
       //LOAD
       {
-        ID, 5'd11
+        ID, LOAD
       } : begin
         next_state = ExLOAD;
       end
       {
-        ExLOAD, 5'd11
+        ExLOAD, LOAD
       } : begin
         next_state = MemREAD;
       end
       {
-        MemREAD, 5'd11
+        MemREAD, LOAD
       } : begin
         next_state = WbLOAD;
       end
       {
-        WbLOAD, 5'd11
+        WbLOAD, LOAD
       } : begin
         next_state = IF;
       end
+
       //CMP
       {
-        ID, 5'd17
+        ID, CMP
       } : begin
         next_state = ExALU;
       end
       {
-        ExALU, 5'd17
+        ExALU, CMP
       } : begin
         next_state = IF;
       end
+
       //JUMP
       {
-        ID, 5'd17
+        ID, JUMP  // prev was 5'd17 which is CMP
       } : begin
         next_state = ExJUMP;
       end
       {
-        ExJUMP, 5'd17
+        ExJUMP, JUMP  // prev was 5'd17 which is CMP
       } : begin
         next_state = IF;
       end
+
       //BRG
       {
-        ID, 5'd21
+        ID, BRG
       } : begin
         if (!flags_reg[0] && !flags_reg[1]) begin
           next_state = ExJUMP;
@@ -236,13 +273,14 @@ module controlfsm (
         end
       end
       {
-        ExJUMP, 5'd21
+        ExJUMP, BRG
       } : begin
         next_state = IF;
       end
+
       //BRGE
       {
-        ID, 5'd22
+        ID, BRGE
       } : begin
         if (!flags_reg[1]) begin
           next_state = ExJUMP;
@@ -251,80 +289,83 @@ module controlfsm (
         end
       end
       {
-        ExJUMP, 5'd22
+        ExJUMP, BRGE
       } : begin
         next_state = IF;
       end
+
       //LOADF
       {
-        ID, 5'd12
+        ID, LOADF
       } : begin
         next_state = ExLOAD;
       end
       {
-        ExLOAD, 5'd12
+        ExLOAD, LOADF
       } : begin
         next_state = WbALU;
       end
       {
-        WbALU, 5'd12
+        WbALU, LOADF
       } : begin
         next_state = ExLIR;
       end
       {
-        ExLIR, 5'd12
+        ExLIR, LOADF
       } : begin
         next_state = ExALU;
       end
       {
-        ExALU, 5'd12
+        ExALU, LOADF
       } : begin
         next_state = MemREAD;
       end
       {
-        MemREAD, 5'd12
+        MemREAD, LOADF
       } : begin
         next_state = WbLOAD;
       end
       {
-        WbLOAD, 5'd12
+        WbLOAD, LOADF
       } : begin
         next_state = IF;
       end
+
       //STORE
       {
-        ID, 5'd13
+        ID, STORE
       } : begin
         next_state = ExLOAD;
       end
       {
-        ExLOAD, 5'd13
+        ExLOAD, STORE
       } : begin
         next_state = MemWRITE;
       end
       {
-        MemWRITE, 5'd13
+        MemWRITE, STORE
       } : begin
         next_state = IF;
       end
+
       //STOREF
       {
-        ID, 5'd14
+        ID, STOREF
       } : begin
         next_state = ExSWAPREG;
       end
       {
-        ExSWAPREG, 5'd14
+        ExSWAPREG, STOREF
       } : begin
         next_state = ExLOADI;
       end
       {
-        ExLOADI, 5'd14
+        ExLOADI, STOREF
       } : begin
         next_state = MemWRITE;
       end
       {
-        MemWRITE, 5'd14
+        MemWRITE, STOREF
       } : begin
         next_state = IF;
       end
