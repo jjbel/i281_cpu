@@ -45,16 +45,16 @@ module controlfsm (
       23'b00000000000000000000100: instruction = 5'd2;  //INPUTCF
       23'b00000000000000000001000: instruction = 5'd3;  //INPUTD
       23'b00000000000000000010000: instruction = 5'd4;  //INPUTDF
-      23'b00000000000000000100000: instruction = 5'd5;  //MOVE
+      23'b00000000000000000100000: instruction = 5'd5;  //MOVE .
       23'b00000000000000001000000: instruction = 5'd6;  //LOADI/LOAP
       23'b00000000000000010000000: instruction = 5'd7;  //ADD
       23'b00000000000000100000000: instruction = 5'd8;  //ADDI
       23'b00000000000001000000000: instruction = 5'd9;  //SUB
       23'b00000000000010000000000: instruction = 5'd10;  //SUBI
       23'b00000000000100000000000: instruction = 5'd11;  //LOAD
-      23'b00000000001000000000000: instruction = 5'd12;  //LOADF
-      23'b00000000010000000000000: instruction = 5'd13;  //STORE
-      23'b00000000100000000000000: instruction = 5'd14;  //STOREF
+      23'b00000000001000000000000: instruction = 5'd12;  //LOADF . 
+      23'b00000000010000000000000: instruction = 5'd13;  //STORE .
+      23'b00000000100000000000000: instruction = 5'd14;  //STOREF .
       23'b00000001000000000000000: instruction = 5'd15;  //SHIFTL
       23'b00000010000000000000000: instruction = 5'd16;  //SHIFTR
       23'b00000100000000000000000: instruction = 5'd17;  //CMP
@@ -355,10 +355,17 @@ module controlfsm (
         c[12] = 1'b1;
         c[15] = 1'b1;
         c[22] = 1'b1;
-        c[4]  = opcode_in[26];
-        c[5]  = opcode_in[25];
-        c[6]  = opcode_in[24];
-        c[7]  = opcode_in[23];
+        if (instruction == 5'd5 | instruction == 5'd12 | instruction == 5'd13 | instruction == 5'd14) begin
+          c[4] = opcode_in[24];
+          c[5] = opcode_in[23];
+          c[6] = opcode_in[26];
+          c[7] = opcode_in[25];
+        end else begin
+          c[4] = opcode_in[26];
+          c[5] = opcode_in[25];
+          c[6] = opcode_in[24];
+          c[7] = opcode_in[23];
+        end
       end
       ExALU: begin
         c[12] = |{opcode_in[17], opcode_in[14], opcode_in[12], opcode_in[10:7], opcode_in[5:4], opcode_in[2]};
@@ -395,6 +402,8 @@ module controlfsm (
         c[3] = 1'b1;
       end
       ExLIR: begin
+        c[4]  = opcode_in[26];
+        c[5]  = opcode_in[25];
         c[11] = 1'b1;
       end
       ExSWAPREG: begin
@@ -409,6 +418,7 @@ module controlfsm (
         c[19] = 1'b1;
         c[12] = 1'b1;
         c[22] = 1'b1;
+        c[24] = 1'b1;
       end
       MemREAD: begin
         c[23] = 1'b1;
