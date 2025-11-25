@@ -99,25 +99,43 @@ module i281_toplevel_tb ();
     end
   endfunction
 
-  function [8*8-1:0] state_name;
-    input [7:0] op;
+  function [9*8-1:0] state_name;
+    input [5:0] state;
     begin
-      case (op)
-        8'd0: state_name = "IF      ";  // pad to 8 chars
-        8'd1: state_name = "ID      ";
-        8'd10: state_name = "ExLOAD  ";
-        8'd6: state_name = "MemREAD ";
-        8'd9: state_name = "WbLOAD  ";
-        default: state_name = "UNKNOWN ";
+      case (state)
+        5'd0:  state_name = "IF       ";
+        5'd1:  state_name = "ID       ";
+        5'd2:  state_name = "ExALU    ";
+        5'd3:  state_name = "ExADDR   ";
+        5'd4:  state_name = "ExBRANCH ";
+        5'd5:  state_name = "ExJUMP   ";
+        5'd6:  state_name = "MemREAD  ";
+        5'd7:  state_name = "MemWRITE ";
+        5'd8:  state_name = "WbALU    ";
+        5'd9:  state_name = "WbLOAD   ";
+        5'd10: state_name = "ExLOAD   ";
+        5'd11: state_name = "ExLOADI  ";
+        5'd12: state_name = "ExLIR    ";
+        5'd13: state_name = "ExMOVE   ";
+        5'd14: state_name = "ExSWAPREG";
+        5'd15: state_name = "WbPC     ";
+        5'd16: state_name = "ExAMEMADD";
+        5'd17: state_name = "ExMEMJUMP";
+        5'd18: state_name = "ExCMP    ";
+        5'd19: state_name = "ExLR     ";
       endcase
     end
   endfunction
+
+  initial begin
+    $display("Cycle  Instr    State       A   B   C   D    Flags");
+  end
 
   integer cycle = 0;
   always @(posedge clock) begin
     cycle = cycle + 1;
     #1;
-    $display("%5d: %s %s %1d %1d %1d %1d    %4b", cycle, instr_name(dut.CONTROL_LOGIC.instruction),
+    $display("%5d: %s %s %3d %3d %3d %3d    %4b", cycle, instr_name(dut.CONTROL_LOGIC.instruction),
              state_name(dut.CONTROL_LOGIC.state), dut.REGISTERS.A, dut.REGISTERS.B,
              dut.REGISTERS.C, dut.REGISTERS.D, dut.FLAGS.flag_reg);
   end
