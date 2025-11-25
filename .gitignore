@@ -9,6 +9,7 @@ UrJTAG
 
 # iverilog, gtkwave
 a.out
+*.vcd
 
 # assembler
 *.class
@@ -16,3 +17,4 @@ a.out
 
 # latex
 build
+
