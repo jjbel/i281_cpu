@@ -40,7 +40,7 @@ module controlfsm (
   ExAMEMADD = 5'd16,
   ExMEMJUMP = 5'd17,
   ExCMP = 5'd18,
-  ExSUB = 5'd19;
+  ExLR = 5'd19;
 
 
   localparam NOOP=5'd0,
@@ -431,7 +431,7 @@ module controlfsm (
         end else if (flags_reg[1] == 1) begin
           next_state = ExSWAPREG;
         end else begin
-          next_state = ExSUB;
+          next_state = WbALU;
         end
       end
       {
@@ -440,7 +440,12 @@ module controlfsm (
         next_state = MemWRITE;
       end
       {
-        ExSUB, GCD
+        WbALU, GCD
+      } : begin
+        next_state = ExLR;
+      end
+      {
+        ExLR, GCD
       } : begin
         next_state = ExCMP;
       end
@@ -452,7 +457,7 @@ module controlfsm (
       {
         ExSWAPREG, GCD
       } : begin
-        next_state = ExSUB;
+        next_state = WbALU;
       end
     endcase
   end
@@ -522,6 +527,14 @@ module controlfsm (
         c[24] = 1'b1;
         c[22] = 1'b1;
       end
+      ExLR: begin
+        c[4]  = opcode_in[26];
+        c[5]  = opcode_in[25];
+        c[6]  = opcode_in[24];
+        c[7]  = opcode_in[23];
+        c[11] = 1'b1;
+        c[15] = 1'b1;
+      end
       ExJUMP: begin
         c[12] = 1'b1;
         c[22] = 1'b1;
@@ -567,11 +580,6 @@ module controlfsm (
       end
       WbPC: begin
         c[3] = 1'b1;
-      end
-      ExSUB: begin
-        c[10] = 1'b1;
-        c[8]  = opcode_in[26];
-        c[9]  = opcode_in[25];
       end
       ExMEMJUMP: begin
         c[19] = 1'b1;
