@@ -1,6 +1,6 @@
 \documentclass[12pt]{article}
 
-\usepackage[a4paper,left=2.5cm, right=2.5cm, top = 1.5cm, bottom = 2.5cm]{geometry}
+\usepackage[a4paper,left=2.5cm,right=2.5cm,top=1.5cm,bottom=2.5cm]{geometry}
 
 % \usepackage{amsmath}
 % \usepackage{amssymb}
@@ -10,6 +10,9 @@
 \usepackage{hyperref} % for href
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+
 % \usepackage{ragged2e} % for flushleft
 
 \usepackage[table]{xcolor} % Required for \cellcolor
@@ -115,7 +118,7 @@ The decoder produces 27 outputs: a 23-bit one-hot opcode, and 4 outputs to selec
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.6\textwidth]{../i281_main/OpCode Decoder/images/decoder_netlist.png}
+  \includegraphics[width=0.6\textwidth]{decoder_netlist.png}
   \caption{Opcode Decoder Diagram}
 \end{figure}
 
@@ -166,6 +169,178 @@ The ALU operates on 4x 8-bit registers: A,B,C,D.
 
 \section{Verilog implementation}
 
+Find the Verilog code, waveforms and documentation at \url{https://github.com/jjbel/i281_cpu}
+
 We implemented each block in a separate Verilog module. For example the folder \texttt{i281\_main/Control Logic} contains the control logic in \texttt{controllogic.v}, its testbench in \texttt{controllogic\_tb.v}.
+
+\subsection{Directory structure}
+
+\begin{verbatim}
+i281_main
+|   dump.vcd
+|   i281_main.qpf
+|   i281_main.qsf
+|   i281_toplevel.v
+|   i281_toplevel_tb.v
+---ALU
+|   |   alu.v
+|   |   alu_tb.v
+---Assembler
+|   |   BIOS_Hardcoded_High.v
+|   |   BIOS_Hardcoded_Low.v
+|   |   BubbleSort.asm
+|   |   i281assembler.java
+|   |   User_Code_High.v
+|   |   User_Code_Low.v
+|   |   User_Data.v
+---Code Memory
+|       codemem.v
+---Control Logic
+|   |   a.out
+|   |   controllogic.v
+|   |   controllogic_tb.v
+---Data Memory
+|       datamem.v
+---Flags
+|       flags.v
+---OpCode Decoder
+|   |   opcodedec.v
+|   |   opcodedec_tb.v
+---PC
+|       pc.v
+---PC Update
+|       a.out
+|       pc_update.v
+|       pc_update_slide.png
+|       pc_update_tb.v
+---Registers
+|       registers.v
+
+\end{verbatim}
+
+\section{Assembler}
+
+We use Prof. Stoytchev's assembler \texttt{i281assembler.java} to convert assembly code in a .asm file to machine code. It produces 4 verilog files: BIOS\_Hardcoded\_High.v and BIOS\_Hardcoded\_Low.v have an empty BIOS which just jumps to the user code at row 32. The user code is in User\_Code\_Low.v and User\_Code\_High.v. For example, this stores the bubble sort code. Finally, we give the input numbers to the bubble sort in User\_Data.v. The codemem and datamem Verilog modules instantiate modules to load these hardcoded values on reset.
+
+\section{Running Bubble Sort, Memory Waveforms}
+
+Following is the contents of the data memory, registers, and flags while bubble sort is running. The array (7,3,2,1,6,4,5,8) is finally sorted in ascending order.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{bubble_waveform_flags.png}
+  \caption{Bubble Sort Waveform}
+\end{figure}
+
+\newpage
+\section{Multi-cycle Implementation}
+
+The Multicycle Implementation of i281 CPU requires us to create an FSM control block which generates a different FSM for each instruction. Since we are to use the same assembler, the Opcode decoder is kept the same.
+
+\begin{figure} [H]
+  \centering
+  \includegraphics[width=0.9\linewidth]{Multicycle Datapath.png}
+  \caption{Datapath Diagram}
+  \label{fig:placeholder}
+\end{figure}
+
+A fixed set of states is first created, each of which has a definite output sequence of c[24:1]. Each instruction will be a FSM of a subset of these states. The set of states used is provided below:
+
+\lstdefinestyle{verilog_dark}{
+  backgroundcolor=\color{black!5},
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue!70}\bfseries,
+  commentstyle=\color{green!40!black},
+  stringstyle=\color{red!70},
+  numbers=left,
+  numberstyle=\tiny\color{gray!60},
+  frame=single,
+  rulecolor=\color{black!50},
+  breaklines=true,
+  xleftmargin=10pt,
+  xrightmargin=10pt
+}
+
+\begin{lstlisting}[style=verilog_dark, language=Verilog]
+localparam IF        = 5'd0,
+           ID        = 5'd1,
+           ExALU     = 5'd2,
+           ExADDR    = 5'd3,
+           ExBRANCH  = 5'd4,
+           ExJUMP    = 5'd5,
+           MemREAD   = 5'd6,
+           MemWRITE  = 5'd7,
+           WbALU     = 5'd8,
+           WbLOAD    = 5'd9,
+           ExLOAD    = 5'd10,
+           ExLOADI   = 5'd11,
+           ExLIR     = 5'd12,
+           ExMOVE    = 5'd13,
+           ExSWAPREG = 5'd14;
+\end{lstlisting}
+
+\newpage
+A basic representation of the control logic FSM is as follows:
+
+\begin{lstlisting}[style=verilog_dark, language=Verilog]
+module controlfsm (...)
+    always@(posedge clock or posedge reset)
+    if(reset) begin
+        state <= IF;
+    end
+    else begin
+        state <= next_state
+    end
+
+    always@(*) begin
+        case(opcode[22:0])
+            instruction = f(opcode_in)
+        endcase
+    end
+
+    always@(*) begin
+        next_state = g(state,instruction)
+    end
+
+    always@(*) begin
+        case(state)
+            c(I)
+        endcase
+    end
+
+endmodule
+\end{lstlisting}
+
+For example, a NOOP command will cycle from IF (Instruction fetch) to ID (Instruction Decode) and back to IF (instruction fetch), where the next instruction is run.
+
+\begin{lstlisting}[style=verilog_dark, language=Verilog]
+  casez ({
+      state, instruction
+    })
+      {
+        IF, 5'bzzzzz  //instruction is reg[4:0], any instruction has next ID
+      } : begin
+        next_state = ID;
+      end
+      // NOOP OPERATION
+      {
+        ID, 5'd0
+      } : begin
+        next_state = IF;
+      end
+\end{lstlisting}
+
+\subsubsection{Brief Description of Important States:}
+\begin{itemize}
+  \item IF: (Instruction Fetch): Next instruction is fetched into the IMEM Register. PC and value 8'b00000001 are loaded into ALU operands and addition is done to calculate PC + 1 (the default next address to read from). (This is a difference to single-cycle variant where PC what updated with a separate adder)
+  \item ID: Instruction decode: Here values of register[RX], register [RY] are loaded into left input reg and right input reg for calculations. The instruction is decoded from the opcode provided using a binary decoder as opcode\_in[22:0] are one-hot encoded.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\linewidth]{waveform_RTL.png}
+  \caption{RTL view of the datapath, in Quartus}
+  \label{fig:placeholder}
+\end{figure}
 
 \end{document}

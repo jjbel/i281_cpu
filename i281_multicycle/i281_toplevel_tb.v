@@ -63,7 +63,7 @@ module i281_toplevel_tb ();
     reset = 0;
     #5;
     run = 1;
-    #10000;
+    #100000;
     $finish;
   end
 
