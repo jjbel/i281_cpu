@@ -67,6 +67,13 @@ module i281_toplevel_tb ();
     $finish;
   end
 
+  integer cycle = 0;
+  always @(posedge clock) begin
+    cycle = cycle + 1;
+    $strobe("%5d: %d %d %d", cycle, datamem0, datamem1, dut.CONTROL_LOGIC.state);
+  end
+
+
   //variable dump
   initial begin
     $dumpfile("dump.vcd");
