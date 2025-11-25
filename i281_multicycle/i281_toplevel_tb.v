@@ -67,12 +67,60 @@ module i281_toplevel_tb ();
     $finish;
   end
 
+  function [8*8-1:0] instr_name;
+    input [4:0] instruction;
+    begin
+      case (instruction)
+        5'd0: instr_name = "NOOP    ";
+        5'd1: instr_name = "INPUTC  ";
+        5'd2: instr_name = "INPUTCF ";
+        5'd3: instr_name = "INPUTD  ";
+        5'd4: instr_name = "GCD     ";
+        5'd5: instr_name = "MOVE    ";
+        5'd6: instr_name = "LOADIP  ";
+        5'd7: instr_name = "ADD     ";
+        5'd8: instr_name = "ADDI    ";
+        5'd9: instr_name = "SUB     ";
+        5'd10: instr_name = "SUBI    ";
+        5'd11: instr_name = "LOAD    ";
+        5'd12: instr_name = "LOADF   ";
+        5'd13: instr_name = "STORE   ";
+        5'd14: instr_name = "STOREF  ";
+        5'd15: instr_name = "SHIFTL  ";
+        5'd16: instr_name = "SHIFTR  ";
+        5'd17: instr_name = "CMP     ";
+        5'd18: instr_name = "JUMP    ";
+        5'd19: instr_name = "BRE_BRZ ";
+        5'd20: instr_name = "BRNEBRNZ";
+        5'd21: instr_name = "BRG     ";
+        5'd22: instr_name = "BRGE    ";
+        default: instr_name = "UNKNOWN ";
+      endcase
+    end
+  endfunction
+
+  function [8*8-1:0] state_name;
+    input [7:0] op;
+    begin
+      case (op)
+        8'd0: state_name = "IF      ";  // pad to 8 chars
+        8'd1: state_name = "ID      ";
+        8'd10: state_name = "ExLOAD  ";
+        8'd6: state_name = "MemREAD ";
+        8'd9: state_name = "WbLOAD  ";
+        default: state_name = "UNKNOWN ";
+      endcase
+    end
+  endfunction
+
   integer cycle = 0;
   always @(posedge clock) begin
     cycle = cycle + 1;
-    $strobe("%5d: %d %d %d", cycle, datamem0, datamem1, dut.CONTROL_LOGIC.state);
+    #1;
+    $display("%5d: %s %s %1d %1d %1d %1d    %4b", cycle, instr_name(dut.CONTROL_LOGIC.instruction),
+             state_name(dut.CONTROL_LOGIC.state), dut.REGISTERS.A, dut.REGISTERS.B,
+             dut.REGISTERS.C, dut.REGISTERS.D, dut.FLAGS.flag_reg);
   end
-
 
   //variable dump
   initial begin
