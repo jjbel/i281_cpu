@@ -29,7 +29,7 @@ module controlfsm (
   ExJUMP = 5'd5,
   MemREAD = 5'd6,
   MemWRITE = 5'd7,
-  WbALU = 5'd8,
+  WbALU_RX = 5'd8,
   WbLOAD = 5'd9,
   ExLOAD = 5'd10,
   ExLOADI = 5'd11,
@@ -40,7 +40,10 @@ module controlfsm (
   ExAMEMADD = 5'd16,
   ExMEMJUMP = 5'd17,
   ExCMP = 5'd18,
-  ExLR = 5'd19;
+  ExLR = 5'd19,
+  WAIT = 5'd20,
+  WbALU_RY = 5'd21,
+  ExCOMPUTE = 5'd22;
 
 
   localparam NOOP=5'd0,
@@ -128,10 +131,10 @@ module controlfsm (
       {
         ExADDR, MOVE  // TODO prev was ExALU?
       } : begin
-        next_state = WbALU;
+        next_state = WbALU_RX;
       end
       {
-        WbALU, MOVE
+        WbALU_RX, MOVE
       } : begin
         next_state = IF;
       end
@@ -145,10 +148,10 @@ module controlfsm (
       {
         ExLOADI, LOADI_LOAP
       } : begin
-        next_state = WbALU;
+        next_state = WbALU_RX;
       end
       {
-        WbALU, LOADI_LOAP
+        WbALU_RX, LOADI_LOAP
       } : begin
         next_state = IF;
       end
@@ -162,10 +165,10 @@ module controlfsm (
       {
         ExALU, ADD
       } : begin
-        next_state = WbALU;
+        next_state = WbALU_RX;
       end
       {
-        WbALU, ADD
+        WbALU_RX, ADD
       } : begin
         next_state = IF;
       end
@@ -179,10 +182,10 @@ module controlfsm (
       {
         ExAMEMADD, ADDI
       } : begin
-        next_state = WbALU;
+        next_state = WbALU_RX;
       end
       {
-        WbALU, ADDI
+        WbALU_RX, ADDI
       } : begin
         next_state = IF;
       end
@@ -196,10 +199,10 @@ module controlfsm (
       {
         ExALU, SUB
       } : begin
-        next_state = WbALU;
+        next_state = WbALU_RX;
       end
       {
-        WbALU, SUB
+        WbALU_RX, SUB
       } : begin
         next_state = IF;
       end
@@ -213,10 +216,10 @@ module controlfsm (
       {
         ExADDR, SUBI
       } : begin
-        next_state = WbALU;
+        next_state = WbALU_RX;
       end
       {
-        WbALU, SUBI
+        WbALU_RX, SUBI
       } : begin
         next_state = IF;
       end
@@ -426,12 +429,17 @@ module controlfsm (
       {
         ExCMP, GCD
       } : begin
+        next_state = WAIT;
+      end
+      {
+        WAIT, GCD
+      } : begin
         if (flags_reg[0] == 1) begin
           next_state = ExMEMJUMP;
         end else if (flags_reg[1] == 1) begin
           next_state = ExSWAPREG;
         end else begin
-          next_state = WbALU;
+          next_state = WbALU_RX;
         end
       end
       {
@@ -440,7 +448,7 @@ module controlfsm (
         next_state = MemWRITE;
       end
       {
-        WbALU, GCD
+        WbALU_RX, GCD
       } : begin
         next_state = ExLR;
       end
@@ -457,7 +465,17 @@ module controlfsm (
       {
         ExSWAPREG, GCD
       } : begin
-        next_state = WbALU;
+        next_state = ExCOMPUTE;
+      end
+      {
+        ExCOMPUTE, GCD
+      } : begin
+        next_state = WbALU_RY;
+      end
+      {
+        WbALU_RY, GCD
+      } : begin
+        next_state = ExLR;
       end
     endcase
   end
@@ -554,6 +572,9 @@ module controlfsm (
         c[5]  = opcode_in[23];
         c[11] = 1'b1;
         c[15] = 1'b1;
+        c[12] = 1'b1;
+        c[13] = 1'b1;
+        c[22] = 1'b1;
       end
       ExLOADI: begin
         c[19] = 1'b1;
@@ -567,10 +588,22 @@ module controlfsm (
       MemWRITE: begin
         c[17] = 1'b1;
       end
-      WbALU: begin
+      WbALU_RX: begin
         c[10] = 1'b1;
         c[8]  = opcode_in[26];
         c[9]  = opcode_in[25];
+      end
+      WbALU_RY: begin
+        c[10] = 1'b1;
+        c[8]  = opcode_in[24];
+        c[9]  = opcode_in[23];
+      end
+      ExCOMPUTE: begin
+        c[12] = 1'b1;
+        c[13] = 1'b1;
+        c[22] = 1'b1;
+        c[21] = 1'b1;
+        c[24] = 1'b1;
       end
       WbLOAD: begin
         c[18] = 1'b1;
@@ -586,6 +619,9 @@ module controlfsm (
         c[24] = 1'b1;
         c[22] = 1'b1;
         c[12] = 1'b1;
+      end
+      WAIT: begin
+        c[1] = 0;  //do nothing
       end
 
     endcase

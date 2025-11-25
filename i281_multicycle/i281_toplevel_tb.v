@@ -103,16 +103,16 @@ module i281_toplevel_tb ();
     input [5:0] state;
     begin
       case (state)
-        5'd0:  state_name = "IF       ";
-        5'd1:  state_name = "ID       ";
-        5'd2:  state_name = "ExALU    ";
-        5'd3:  state_name = "ExADDR   ";
-        5'd4:  state_name = "ExBRANCH ";
-        5'd5:  state_name = "ExJUMP   ";
-        5'd6:  state_name = "MemREAD  ";
-        5'd7:  state_name = "MemWRITE ";
-        5'd8:  state_name = "WbALU    ";
-        5'd9:  state_name = "WbLOAD   ";
+        5'd0: state_name = "IF       ";
+        5'd1: state_name = "ID       ";
+        5'd2: state_name = "ExALU    ";
+        5'd3: state_name = "ExADDR   ";
+        5'd4: state_name = "ExBRANCH ";
+        5'd5: state_name = "ExJUMP   ";
+        5'd6: state_name = "MemREAD  ";
+        5'd7: state_name = "MemWRITE ";
+        5'd8: state_name = "WbALU_RX ";
+        5'd9: state_name = "WbLOAD   ";
         5'd10: state_name = "ExLOAD   ";
         5'd11: state_name = "ExLOADI  ";
         5'd12: state_name = "ExLIR    ";
@@ -123,6 +123,10 @@ module i281_toplevel_tb ();
         5'd17: state_name = "ExMEMJUMP";
         5'd18: state_name = "ExCMP    ";
         5'd19: state_name = "ExLR     ";
+        5'd20: state_name = "WAIT     ";
+        5'd21: state_name = "WbALU_RY ";
+        5'd22: state_name = "ExCOMPUTE";
+        default: state_name = "unknown ";
       endcase
     end
   endfunction
@@ -135,9 +139,9 @@ module i281_toplevel_tb ();
   always @(posedge clock) begin
     cycle = cycle + 1;
     #1;
-    $display("%5d: %s %s %3d %3d %3d %3d    %4b", cycle, instr_name(dut.CONTROL_LOGIC.instruction),
-             state_name(dut.CONTROL_LOGIC.state), dut.REGISTERS.A, dut.REGISTERS.B,
-             dut.REGISTERS.C, dut.REGISTERS.D, dut.FLAGS.flag_reg);
+    $display("%5d: %s %s %3d %3d %3d %3d    %4b  %d", cycle, instr_name(
+             dut.CONTROL_LOGIC.instruction), state_name(dut.CONTROL_LOGIC.state), dut.REGISTERS.A,
+             dut.REGISTERS.B, dut.REGISTERS.C, dut.REGISTERS.D, dut.FLAGS.flag_reg, datamem2);
   end
 
   //variable dump
