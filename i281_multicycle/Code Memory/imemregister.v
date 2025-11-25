@@ -17,7 +17,7 @@ module imemregister (
 
   always @(posedge clock or posedge reset) begin
     if (reset) begin
-      imem_register <= 8'b0;
+      imem_register <= 16'b0;
     end else if (c16 && run) begin
       imem_register <= instruction;
     end
