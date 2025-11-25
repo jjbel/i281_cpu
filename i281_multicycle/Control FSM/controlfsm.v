@@ -272,6 +272,49 @@ module controlfsm (
         next_state = IF;
       end
 
+      //BRE/BRZ
+      {
+        ID, BRE_BRZ
+      } : begin
+        if (flags_reg[0]) begin
+          next_state = ExLOAD;
+        end else begin
+          next_state = IF;
+        end
+      end
+      {
+        ExLOAD, BRE_BRZ
+      } : begin
+        next_state = WbPC;
+      end
+      {
+        WbPC, BRE_BRZ
+      } : begin
+        next_state = IF;
+      end
+
+      //BRNE/BRNZ
+      {
+        ID, BRNE_BRNZ
+      } : begin
+        if (!flags_reg[0]) begin
+          next_state = ExLOAD;
+        end else begin
+          next_state = IF;
+        end
+      end
+      {
+        ExLOAD, BRNE_BRNZ
+      } : begin
+        next_state = WbPC;
+      end
+      {
+        WbPC, BRNE_BRNZ
+      } : begin
+        next_state = IF;
+      end
+
+
       //BRG
       {
         ID, BRG
