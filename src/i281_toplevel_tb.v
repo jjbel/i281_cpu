@@ -132,7 +132,7 @@ module i281_toplevel_tb ();
   endfunction
 
   initial begin
-    $display("Cycle  Instr    State       A   B   C   D    Flags");
+    $display("Cycle  Instr    State       A   B   C   D    Flags   Datamem[2]");
   end
 
   integer cycle = 0;
